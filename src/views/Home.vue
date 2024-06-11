@@ -3,15 +3,21 @@
     <FechamentoCaixa
       nomeLoterica="DouraSoft"
       tflQuantity1="5"
-      tflTime1="15"
-      spreadsheetTime1="15"
-      checkTime1="15"
+      tflTime1="15 Min"
+      spreadsheetTime1="15 Min"
+      checkTime1="15 Min"
       operatorSalary1="R$ 1500,00"
       managerSalary1="R$ 3000,00"
       lotericoSalary1="R$ 10000,00"
     />
     <div v-if="showBlur" class="overlay">
-      
+      <div class="bg-white p-8 rounded-lg shadow-lg border-2 border-gray-300 text-center">
+        <h3>Faça o seu Diagnóstico Próprio e saber como economizar mais!</h3>
+        <p class="pb-2">Acesse esse link ou responda pelo site!</p>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+            <a href="https://tbchat.dourasoft.com.br/diagnostico">Vamos nessa!</a>            
+        </button>
+      </div>
     </div>
   </div>
 </template>

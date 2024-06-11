@@ -1,4 +1,6 @@
 <template>
+    <LoadingCircle v-if="loading"/>
+
     <div>
     <TitleView title="Templates"/>
     </div>
@@ -51,14 +53,16 @@
   import http from '@/services/http.js';
   import TitleView from "../components/Title/TitleView.vue";
   import { format } from 'date-fns'; 
+import LoadingCircle from "../components/loading/LoadingCircle.vue";
 
   export default {
     name: "ListTemplates",
     components: {
-      TableView, TitleView
+      TableView, TitleView,LoadingCircle
     },
     data() {
       return {
+        loading:false,
         templates: [],
         openModal: true,
         modalContent:{},
@@ -121,10 +125,12 @@
         else count++
         if(count !=1){
         try {
-
+        this.loading = true
           
-         await http.put('/template/'+this.modalContent.id,{"name":this.newTemplate});
-         alert("Diagnóstico Atualizado com sucesso")
+         await http.put('/template',{"name":this.newTemplate.nameTemplate, "id": this.modalContent.id});
+         alert("Diagnóstico Atualizado com sucesso")         
+         this.loading = false;
+
          window.location.reload();
         } catch (error) {
           console.log(error)
@@ -133,9 +139,12 @@
       },
      async apagar(){
       try {
-        const id = this.modalContent.id
+        this.loading = true
+          const id = this.modalContent.id
             await http.delete('/template/'+id  );
             alert("Template Apagado com sucesso")
+        this.loading = false;
+
             window.location.reload();
           } catch (error) {
             console.log(error.response)

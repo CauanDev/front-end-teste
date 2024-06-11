@@ -1,4 +1,6 @@
 <template>
+  <LoadingCircle v-if="loading"/>
+
   <div class="flex h-screen">
 
     <div class="flex-1">
@@ -63,9 +65,15 @@
 </template>
 <script>
 import http from '@/services/http.js'
+import LoadingCircle from '../components/loading/LoadingCircle.vue';
 export default {
+  components:{
+    LoadingCircle
+  },
+
   data() {
     return {
+      loading: false,
       user:{
         name: '',
         email:'',
@@ -87,8 +95,11 @@ export default {
       {
        
         try {
+          this.loading = true
             await http.post('/users/add',this.user);
             alert("Usuário Adicionado com sucesso")
+            this.loading = false
+
             window.location.reload()
           } catch (error) {
             console.log(error)

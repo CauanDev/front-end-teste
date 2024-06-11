@@ -1,4 +1,5 @@
 <template>
+  <LoadingCircle v-if="loading"/>
   <div class="flex h-screen">
     <div class="flex-1">
       <div class="flex items-center justify-center h-full bg-gray-100">
@@ -53,6 +54,7 @@
               <div class="text-center">
                 <label class="block text-gray-700 text-sm font-bold mb-1" for="email">
                   Salário Operador
+                  
                 </label>
                 <select v-model="body.salarioOperador"
                 class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -66,6 +68,7 @@
               <div class="text-center">
                 <label class="block text-gray-700 text-sm font-bold mb-1" for="email">
                   Salário Gerente
+                  <br>
                 </label>
                 <select v-model="body.salarioGerente"
                 class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -79,6 +82,7 @@
               <div class="text-center">
                 <label class="block text-gray-700 text-sm font-bold mb-1" for="email">
                   Salário Lotérico
+                  <br>
                 </label>
                 <select v-model="body.salarioLoterico"
                 class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -116,15 +120,20 @@
 <script>
 
 import http from '@/services/http.js';
+import LoadingCircle from '../components/loading/LoadingCircle.vue';
 
   export default {
     name:"CreateResults",
+    components:{
+      LoadingCircle
+    },
     data() {
       return {
-        salarioOperador:["R$1.400","R$1.500","R$1.600","R$1.700","R$1.800"],
-        salarioGerente:["R$1.600","R$1.800","R$2.000","R$2.500","R$3.000"],
-        salarioLoterico:["R$2.500","R$5.000","R$7.500","R$10.000","R$15.000","R$16.000+"],
+        salarioOperador:["R$ 1400,00","R$ 1500,00","R$ 1600,00","R$ 1700,00","R$ 1800,00"],
+        salarioGerente:["R$ 1600,00","R$ 1800,00","R$ 2000,00","R$ 2500,00","R$ 3000,00"],
+        salarioLoterico:["R$ 2500,00","R$ 5000,00","R$ 7500,00","R$ 10000,00","R$ 15000,00","R$ 16000,00+"],
         types:[],
+        loading:false,
         tipoDiagnostico:'',
         body:{
         quantidadeTFL:'',
@@ -132,9 +141,10 @@ import http from '@/services/http.js';
         tempoFecharTFL: '',
         tempoLancarCaixa: '',
         tempoConferir: '',
-        salarioOperador: 'R$1.400',
-        salarioGerente: 'R$1.600',
-        salarioLoterico: 'R$2.500'
+        salarioOperador: 'R$ 1400,00',
+        salarioGerente: 'R$ 1600,00',
+        salarioLoterico: 'R$ 2500,00',
+        
       },
         
       };
@@ -149,14 +159,19 @@ import http from '@/services/http.js';
         if(this.isFormValid){
 
           try {
-
+          this.loading = true
+           this.body.tempoFecharTFL =   this.body.tempoFecharTFL+" Min"
+           this.body.tempoLancarCaixa =   this.body.tempoLancarCaixa+" Min"
+           this.body.tempoConferir =   this.body.tempoConferir+" Min"
 
            await http.post('/results',{
                 "nameTemplate":this.tipoDiagnostico,
                 "name":this.body.nomeLoterica,
                 "values":  JSON.stringify(this.body)
               });
+              
               alert("Resultado Criado com sucesso")
+              this.loading = false
               window.location.reload();
           } catch (error) {
             console.log(error.response)

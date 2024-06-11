@@ -1,4 +1,5 @@
 <template>
+  <LoadingCircle v-if="loading"/>
     <div class="flex h-screen">
      
       <div class="flex-1 ">
@@ -27,6 +28,8 @@
                 type="password" 
                 placeholder="Digite sua senha">
                 <p v-if="!isPasswordValid" class="text-red-500 text-xs italic">Por favor, verifique novamente!</p>
+                <p v-if="wrongPassword" class="text-red-500 text-xs italic">Senha Inválida</p>
+
               </div>
               <div class="flex items-center justify-center w-full">
                 <button class="bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
@@ -43,11 +46,15 @@
   <script>
 
 
-import {useAuth} from "@/stores/auth.js"
+import { useAuth } from "@/stores/auth.js"
 
 import http from '@/services/http.js';
+import LoadingCircle from "../components/loading/LoadingCircle.vue";
 
   export default {
+    components: {
+       LoadingCircle
+     },
     data() {
       return {
         user:{
@@ -55,7 +62,9 @@ import http from '@/services/http.js';
         password: ''},
         isPasswordValid: true,
         isEmailValid: true,
-        isFormValid: false
+        isFormValid: false,
+        wrongPassword: false,
+        loading: false
       };
     }, created() {
     const auth = useAuth();
@@ -67,14 +76,19 @@ import http from '@/services/http.js';
       async submitForm() {
         this.isFormValid = (this.isPasswordValid  && this.isEmailValid) 
         if(this.isFormValid){
-                
+        
+        
           try {
-              const auth = useAuth();
+              this.loading = true;
               const {data} = await http.post('/login',this.user);
-              auth.setToken(data.token);
+              const auth = useAuth();
               auth.setUser(data.user);
+              auth.setToken(data.token);
+              this.loading = false;
+
               this.$router.push({ name: "Dashboard" });
           } catch (error) {
+            this.wrongPassword = true;
             console.log(error)
           }
                    

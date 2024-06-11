@@ -1,4 +1,7 @@
 <template>
+  
+  <LoadingCircle v-if="loading"/>
+
   <div>
   <TitleView title="Atualizar Usuários"/>
   </div>
@@ -57,14 +60,16 @@ import http from '@/services/http.js';
 import TitleView from '../components/Title/TitleView.vue';
 import TableView from '../components/Table/TableView.vue';
 import { format } from 'date-fns'; 
+import LoadingCircle from '../components/loading/LoadingCircle.vue';
 
 export default {
   name: 'UpdateUser',
   components: {
-   TitleView,TableView
+   TitleView,TableView, LoadingCircle
   },
   data() {
     return {
+      loading: false,
       users: [] ,
       openModal: true,
       newUser:{},
@@ -83,6 +88,7 @@ export default {
       const data = await http.get('/users');
       this.users = data.data.users.map(user => {
           return {
+           
             name: user.name,
             email: user.email,      
             created_at: format(new Date(user.created_at), 'dd/MM/yyyy'),
@@ -114,7 +120,7 @@ export default {
     async atualizar(){
         var count=0;
       
-        if(this.modalContent.name!=this.user.name && !/\s/.test(this.user.name) )
+        if(this.modalContent.name!=this.user.name)
         {
           this.newUser.name = this.user.name;
         }  
@@ -128,10 +134,12 @@ export default {
           this.newUser.password = this.user.password;
         } else count++
 
-        if(count !=3){
+        if(count != 3){
         try {
+          this.loading = true
          await http.put('/users/'+this.modalContent.id,this.newUser);
          alert("Usuário Atualizado com sucesso")
+         this.loading = false
          window.location.reload();
         } catch (error) {
           console.log(error.response)
@@ -143,8 +151,10 @@ export default {
     },
     async apagar(){
       try {
+        this.loading = true
           await http.delete('/users/'+this.modalContent.id,this.newUser);
           alert("Usuário Apagado com sucesso")
+          this.loading = false
           window.location.reload();
         } catch (error) {
           console.log(error.response)

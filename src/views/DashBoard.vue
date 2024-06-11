@@ -1,4 +1,5 @@
 <template>
+  <LoadingCircle v-if="loading"/>
   <div>
   <TitleView title="Resultados Diagnosticos"/>
   </div>
@@ -55,14 +56,16 @@
 import TableView from "@/components/Table/TableView.vue";
 import http from '@/services/http.js';
 import TitleView from "../components/Title/TitleView.vue";
+import LoadingCircle from "../components/loading/LoadingCircle.vue";
 
 export default {
   name: "DashBoard",
   components: {
-    TableView, TitleView
+    TableView, TitleView, LoadingCircle
   },
   data() {
     return {
+      loading:false,
       results: [],
       openModal: true,
       modalContent:{},
@@ -143,8 +146,11 @@ export default {
       } else count++
       if(count !=2){
       try {
-       await http.put('/results/'+this.modalContent.id,this.newResults);
+      this.loading = true;
+      await http.put('/results/'+this.modalContent.id,this.newResults);
+       
        alert("Diagnóstico Atualizado com sucesso")
+       this.loading = false;
       } catch (error) {
         console.log(error)
       }
@@ -152,10 +158,16 @@ export default {
     },
    async apagar(){
     try {
+      this.loading = true;
           await http.delete('/results/'+this.modalContent.id);                    
           alert("Diagnóstico Apagado com sucesso")
+      this.loading = false;
+
           window.location.reload();
         } catch (error) {
+          alert("Diagnóstico Não foi Apagado,chame o Kelvin")
+          this.loading = false;
+
           console.log(error.response)
         }
     }

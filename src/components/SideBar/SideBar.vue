@@ -87,10 +87,14 @@ export default {
         this.$router.push({ name: 'Home' });
 
     },
-    handleSubmit() {
-      console.log('Mandado', this.searchQuery);
+    async handleSubmit() {
+      try {
+        http.
+      } catch (error) {
+        
+      }
     },
-    adicionarTemplate(){
+    async adicionarTemplate(){
       const auth = useAuth()
       const name = prompt("Digite o Nome do Novo Template")
       if(name!=null)
