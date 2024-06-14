@@ -73,14 +73,7 @@
                  <div v-if="modalFilter">
                    <div class="flex flex-col gap-1.5 text-center">
                      <div class="flex gap-2 items-center justify-center">
-                         <div class="flex flex-col ">    
-                           <label for="startDate" class="text-sm font-medium text-gray-700">Data Início</label>
-                           <input type="date" @input="startDate = $event.target.value" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
-                         </div>
-                         <div class="flex flex-col">
-                           <label for="endDate" class="text-sm font-medium text-gray-700">Data Final:</label>
-                           <input type="date" @input="endDate = $event.target.value" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
-                         </div>
+
                          <div class="flex flex-col">
                            <label for="endDate" class="text-sm font-medium text-gray-700">Nome Proprietário</label>
                            <input type="text" placeholder="Digite o Nome" v-model="filterName" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
