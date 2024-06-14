@@ -1,6 +1,6 @@
 <template>
-<div class="flex flex-col text-4xl font-semibold items-center justify-center p-5 border border-gray-300 rounded-lg bg-gray-100 shadow-md">
-{{ title }}
+<div class="w-full flex flex-col text-4xl font-semibold items-center justify-end p-5 border border-gray-300 rounded-lg bg-gray-100 shadow-md">
+  {{ title }}
 </div>
 
 </template>

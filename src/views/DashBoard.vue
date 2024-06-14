@@ -6,14 +6,11 @@
 
   <div class=" flex flex-col justify-center mt-10 gap-2 items-center w-full">
   <div class="flex gap-2 items-center">
-    <div class="flex flex-col text-center ">
-    
+    <div class="flex flex-col text-center ">    
       <label for="startDate" class="text-sm font-medium text-gray-700">Data Início</label>
       <input
         type="date"
-
         :max="today"
-
         @input="startDate = $event.target.value"
         class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
       >      

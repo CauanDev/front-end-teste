@@ -109,7 +109,7 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
   </script>
 <style scoped>
 .backgroundimage{
-  background-image: url('https://app.dourasoft.net/img/login.055bd257.jpg');
+  background-image: url('https://onmotor.com.br/wp-content/uploads/2023/04/2023-05-31-servicos-de-mecanica-automotiva-1280x720.jpg');
   background-size: cover; 
   background-position: center; 
   background-repeat: no-repeat; 

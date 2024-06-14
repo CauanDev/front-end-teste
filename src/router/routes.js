@@ -1,70 +1,39 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import RegisterForm from '@/views/RegisterForm.vue';
 import LoginForm from '@/views/LoginForm.vue';
-import HomeView from '@/views/Home.vue';
 import session_routes from './session_routes';
-import DashBoard from '@/views/DashBoard.vue';
-import UpdateUser from "@/views/UpdateUser.vue"
-import ListTemplates from "@/views/ListTemplates.vue"
-import CreateResults from "@/views/CreateResults.vue"
-import DiagnosticoController from "@/views/DiagnosticoController.vue"
+import ListUser from "@/views/ListUser.vue"
+import ListOwners from "@/views/ListOwners.vue"
+import ListVehicles from "@/views/ListVehicles.vue"
+import ListServices from "@/views/ListServices.vue"
 import  NotFoundComponent  from "@/views/NotFoundComponent.vue"
 const routes = [
 
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterForm,
-    meta: {
-      auth:true
-    }
+    path: '/users',
+    name: 'Users',
+    component: ListUser
   
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginForm,
   },
   {
     path: '/',
     name: 'Home',
-    component: HomeView
+    component: LoginForm,
   },
   {
-    path:'/dashboard',
-    name:'Dashboard',
-    component: DashBoard,
+    path:'/owners',
+    name:'Owners',
+    component: ListOwners,
+  },
+  {
+    path:'/vehicles',
+    name:'Vehicles',
+    component: ListVehicles,
 
   },
   {
-    path:'/update',
-    name:'Update',
-    component: UpdateUser,
-    meta: {
-      auth:true
-    }
-  },
-  {
-    path:'/templates',
-    name:'Templates',
-    component: ListTemplates,
-    meta: {
-      auth:true
-    }
-  },
-  {
-    path:"/createresults",
-    name: "CreateResults",
-    component: CreateResults,
-    meta: {
-      auth:true
-    }
-  },
-  {
-    path:"/user/:id",
-    name:"DiagnosticoController",
-    component: DiagnosticoController,
-    
+    path:'/services',
+    name:'Services',
+    component: ListServices
   },
   {
     path: '/:catchAll(.*)',
