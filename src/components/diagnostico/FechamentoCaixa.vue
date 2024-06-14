@@ -37,9 +37,9 @@
               <div class='flex flex-col gap-1.5'>
 
                   <div class='text-center flex  pl-[30%]'>
-                    <p class='mb-1.5' >Operador</p>   
-                    <p class='mb-1.5 pl-12' >Gerente</p>    
-                    <p class='mb-1.5 pl-14' >Lotérico</p>         
+                    <p class='mb-1.5  font-semibold' >Operador</p>   
+                    <p class='mb-1.5 pl-12 font-semibold' >Gerente</p>    
+                    <p class='mb-1.5 pl-14 font-semibold' >Lotérico</p>         
                   </div>
 
                     <div class='text-center flex gap-3'>                
@@ -110,97 +110,99 @@
           <section class='mx-auto flex flex-col items-start justify-center px-2'>
    
             <div class=' flex-row w-45 justify-center '>
-              <div class='flex flex-col gap-2'>
+              <div class='flex flex-col gap-1'>
                   <div class='text-center flex gap-4 pl-[28%]'>
-                    <p class='mb-1.5  whitespace-nowrap' >Sem Sistema</p>   
-                    <p class='mb-1.5 whitespace-nowrap' >Com Sistema</p>    
-                    <p class='mb-1.5 pl-5' >Prejuízo</p>                      
+                    <p class='mb-1.5  whitespace-nowrap font-semibold' >Sem Sistema</p>   
+                    <p class='mb-1.5 whitespace-nowrap font-semibold' >Com Sistema</p>    
+                    <p class='mb-1.5 pl-5 font-semibold' >Prejuízo</p>                      
                                         
                   </div>
-                  <div class='text-center flex gap-3 items-center justify-center'>
-                    <h5 class='text-xs font-semibold'>Quantidade Caixas</h5>  
-                    <Resultado :value='tflQuantity' :semMarca_Centro='true'/> 
-                    <Resultado :value='tflQuantity' :semMarca_Centro='true'/>
-                    <Resultado :value='tflQuantity' :semMarca_Centro='true'/>
+                  <div class='flex justify-center text-center  '>
+                    <h5 class="pr-6 text-[14px] ">Quantidade<br>Caixas</h5>      
+                    <div class="flex pt-3 gap-3">           
+                      <Resultado :value='tflQuantity' :semMarca_Centro='true'/> 
+                      <Resultado :value='tflQuantity' :semMarca_Centro='true'/>
+                      <Resultado :value='tflQuantity' :semMarca_Centro='true'/>
+                    </div>     
                   </div>     
-                  <div class='text-center flex gap-3 items-center justify-center'>
-                    <p class='text-xs font-semibold  mx-5 '>Fechamento <br>por Caixa</p>  
-                    <Resultado :value='tflTime' :semMarca_Centro='true' :Min='true' />                    
-                    <Resultado :value='5' :semMarca_Centro='true' :Min='true'/>
-                    <Resultado :value='parseInt(tflTime) -5 ' :semMarca_Centro='true' :Min='true'/>
+                  <div class='text-center flex items-center justify-center'>
+                    <h5 class='text-[14px] pr-5'>Fechamento <br>por Caixa</h5>  
+                    <div class="flex pt-1 gap-3">        
+                      <Resultado :value='tflTime' :semMarca_Centro='true' :Min='true' />                    
+                      <Resultado :value='5' :semMarca_Centro='true' :Min='true'/>
+                      <Resultado :value='parseInt(tflTime) -5 ' :semMarca_Centro='true' :Min='true'/>
+                    </div>
                   </div>                   
-                  <div class='text-center flex gap-3 pb-3 items-center justify-center'>
-                    <p class='text-xs font-semibold  mr-3 '>Tempo Total/Dia</p>  
-                    <Resultado :value='parseInt(tflQuantity)*parseInt(tflTime)' :semMarca_Centro='true' :Min='true'/>                  
-                    <Resultado :value='parseInt(tflQuantity)*5' :semMarca_Centro='true' :Min='true'/>
-                    <Resultado :value='parseInt(tflQuantity) * parseInt(tflTime) - (parseInt(tflQuantity) * 5)' :semMarca_Centro='true' :Min='true'/>
-                  </div>     
-                    <hr>
+                  <div class='flex text-center justify-center'>
+                    <h5 class=' text-[14px] px-[22px]'>Tempo<br>Total/Dia</h5>  
+                    <div class="flex pt-1 gap-3">  
+                      <Resultado :value='parseInt(tflQuantity)*parseInt(tflTime)' :semMarca_Centro='true' :Min='true'/>                  
+                      <Resultado :value='parseInt(tflQuantity)*5' :semMarca_Centro='true' :Min='true'/>
+                      <Resultado :value='parseInt(tflQuantity) * parseInt(tflTime) - (parseInt(tflQuantity) * 5)' :semMarca_Centro='true' :Min='true'/>
+                    </div>   
+                  </div>   
+                   
 
             
 
-          
 
-
-                  <div  v-if='isOpen'>
-                                
-                    
-
-                    <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                      <p class='text-xs font-semibold mr-5 '>Custo por<br>Operador dia</p>      
+                  <div  v-if='!isOpen'>                                
+                  <hr>
+                  <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
+                      <h5 class='text-[14px]'>Custo por<br>Operador dia</h5>      
                       <Resultado :value='((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary)).toFixed(2)' />
                       <Resultado :value='((parseFloat(tflQuantity)*5) * minutos(operatorSalary)).toFixed(2)' />
                       <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary)) - ((parseFloat(tflQuantity)*5) * minutos(operatorSalary))).toFixed(2)' />
                   </div> 
 
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                    <p class='text-[11px] font-semibold   '>Custo por<br>Operador Semanal</p>      
+                    <h5 class=' text-[14px] '>Custo por<br>Operador Semanal</h5>      
                     <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary))*6).toFixed(2)' />
                     <Resultado :value='(((parseFloat(tflQuantity)*5) * minutos(operatorSalary))*6).toFixed(2)' />
                     <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary))*6)-(((parseFloat(tflQuantity)*5) * minutos(operatorSalary))*6)).toFixed(2)' />
                   </div> 
 
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                    <p class='text-xs font-semibold   '>Custo por<br>Operador Mensal</p>      
+                    <h5 class=' text-[14px]'>Custo por<br> Operador Mensal</h5>      
                     <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary))*26).toFixed(2)'  /> 
                     <Resultado :value='(((parseFloat(tflQuantity)*5) * minutos(operatorSalary))*26).toFixed(2)'  /> 
                     <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(operatorSalary))*26)-(((parseFloat(tflQuantity)*5) * minutos(operatorSalary))*26)).toFixed(2)'  /> 
                   </div> 
                     <hr>
                     <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                      <p class='text-xs font-semibold  '>Custo por Gerente<br>dia</p>   
+                      <h5 class=' text-[14px]'>Custo por<br>Gerente dia</h5>   
                       <Resultado :value='((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary)).toFixed(2)' />
                       <Resultado :value='((parseFloat(tflQuantity)*5) * minutos(managerSalary)).toFixed(2)' />
                       <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary))-((parseFloat(tflQuantity)*5) * minutos(managerSalary))).toFixed(2)' />
                   </div>    
 
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                      <p class='text-xs font-semibold  '>Custo por Gerente<br>Semanal</p>   
+                      <h5 class='text-[14px]'>Custo por<br>Gerente Semanal</h5>   
                       <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary))*6).toFixed(2)' />
                       <Resultado :value='(((parseFloat(tflQuantity)*5) * minutos(managerSalary))*6).toFixed(2)' />
                       <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary))*6) - (((parseFloat(tflQuantity)*5) * minutos(managerSalary))*6)).toFixed(2)' />
                   </div>     
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                    <p class='text-xs font-semibold   '>Custo por Gerente<br>Mensal</p> 
+                    <h5 class=' text-[14px] '>Custo por<br>Gerente Mensal</h5> 
                     <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary))*26).toFixed(2)'  /> 
                     <Resultado :value='(((parseFloat(tflQuantity)*5) * minutos(managerSalary))*26).toFixed(2)'  /> 
                     <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * minutos(managerSalary))*26) - (((parseFloat(tflQuantity)*5) * minutos(managerSalary))*26)).toFixed(2)'  /> 
                   </div>     
                   <hr>
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                    <p class='text-xs font-semibold   '>Custo por Lotérico<br>dia</p>   
-                  <Resultado :value='((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60)).toFixed(2)' />
-                  <Resultado :value='((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60)).toFixed(2)' />
-                  <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60)) -  ((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))).toFixed(2)' />
+                    <h5 class='text-[14px] '>Custo por<br>Lotérico dia</h5>   
+                    <Resultado :value='((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60)).toFixed(2)' />
+                    <Resultado :value='((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60)).toFixed(2)' />
+                    <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60)) -  ((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))).toFixed(2)' />
                   </div>     
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>               
-                    <p class='text-xs font-semibold   '>Custo por Lotérico<br>Semanal</p>  
+                    <h5 class='text-[14px]'>Custo por<br>Lotérico Semanal</h5>  
                     <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60))*6).toFixed(2)' />
                     <Resultado :value='(((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))*6).toFixed(2)' />
                     <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60))*6)  - (((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))*6)).toFixed(2)' />
                   </div>     
                   <div class='text-center flex gap-3  mb-1  items-center justify-center'>                      
-                    <p class='text-xs font-semibold   '>Custo por Lotérico<br>Mensal</p> 
+                    <h5 class='text-[14px]'>Custo por<br>Lotérico Mensal</h5> 
                     <Resultado :value='(((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60))*26).toFixed(2)'  /> 
                     <Resultado :value='(((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))*26).toFixed(2)'  />
                     <Resultado :value='((((parseFloat(tflQuantity)*parseFloat(tflTime)) * ((loterico(lotericoSalary)/189)/60))*26) - (((parseFloat(tflQuantity)*5) * ((loterico(lotericoSalary)/189)/60))*26)).toFixed(2)' />
@@ -273,13 +275,22 @@
 </div>
     </div>
     <div class='col-span-12 bg-[] rounded-b-2xl md:col-span-6 xl:col-span-4 2xl:col-span-3 pl-13' :class="{ 'text-black': isOpenDiagnostico, 'text-transparent': !isOpenDiagnostico }">
-    <section class='mx-auto flex flex-col items-start justify-center p-3 text-center w-full' >
+    <section class='mx-auto flex flex-col items-start justify-center p-3 text-center w-full gap-2' >
         <div class='w-full text-center'>
-            <h1 class='text-xl font-bold'>Diagnóstico</h1> 
+            <h1 class='text-xl font-bold'>Diagnóstico de {{ this.nomeLoterica }}</h1> 
         </div>
         <div>
             <h1>{{tituloTexto()}}</h1>
             <h2>{{corpoTexto()}}</h2>
+        </div>
+        <div>
+            <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h1>
+        </div>
+        <div>
+            <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h1>
+        </div>
+        <div>
+            <h1>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h1>
         </div>
     </section>
 </div>
@@ -331,6 +342,7 @@ export default{
   },
     components: {Resultado, Input},
     data(){return {
+      open:false ,
       lotericoSalary: this.$props.lotericoSalary1,
       managerSalary: this.$props.managerSalary1,
       operatorSalary: this.$props.operatorSalary1,

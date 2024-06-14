@@ -89,7 +89,7 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
               this.$router.push({ name: "Dashboard" });
           } catch (error) {
             this.wrongPassword = true;
-            console.log(error)
+            this.loading = false;
           }
                    
         }

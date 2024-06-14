@@ -3,8 +3,49 @@
   <div>
   <TitleView title="Resultados Diagnosticos"/>
   </div>
-  <div class=" flex justify-center mt-10">
-     <TableView :headers="['Nome Lotérica','Valores','Tipo de Diagnóstico','Link','Ver Detalhes']"  @showDetails="showDetails" :body="results" class="w-[50%]"/>
+
+  <div class=" flex flex-col justify-center mt-10 gap-2 items-center w-full">
+  <div class="flex gap-2 items-center">
+    <div class="flex flex-col text-center ">
+    
+      <label for="startDate" class="text-sm font-medium text-gray-700">Data Início</label>
+      <input
+        type="date"
+
+        :max="today"
+
+        @input="startDate = $event.target.value"
+        class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
+      >      
+    </div>
+    <div class="flex flex-col text-center">
+    <label for="endDate" class="text-sm font-medium text-gray-700">Data Final:</label>
+    <input
+      type="date"
+      :value="today"
+      :min="dataMin"
+      :max="today"
+      @input="endDate = $event.target.value"
+      class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
+    >      
+    </div>
+    <div class="flex flex-col text-center">
+    <label for="endDate" class="text-sm font-medium text-gray-700">Nome Lotérica</label>
+    <input
+      type="text"
+      placeholder="Digite o Nome"
+      @input="findName = $event.target.value"
+      class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
+    >      
+    </div>
+    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 mt-5 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center" @click="filtroData">
+    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+    </svg>
+    <span class="sr-only">Icon description</span>
+    </button>
+  </div>
+     <TableDiagnostico :headers="['Nome Lotérica','Valores','Tipo de Diagnóstico','Ver Detalhes']"  @showDetails="showDetails" :body="results" class="w-[50%]"/>
   </div>
 
   <div id="default-modal" :class="{'hidden':openModal}" class=" fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -39,9 +80,10 @@
             </div>
 
             <div class="flex items-center justify-center p-2 border-t border-gray-200 rounded-b">
-              <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="atualizar">Gravar</button>
-              <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  " @click="apagar">Apagar</button>
-              <button type="button" class="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="copiar">Copiar Link</button>
+              <button type="button" class="focus:outline-none text-black bg-[#337C24] hover:bg-green-500 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="atualizar">Gravar</button>
+              <button type="button" class="focus:outline-none text-black bg-[#FF3E30] hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  " @click="apagar">Apagar</button>
+              <button type="button" class="focus:outline-none text-black bg-[#F9B500] hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="copiar">Copiar Link</button>
+              <button type="button" class="focus:outline-none text-black bg-[#176BEF] hover:bg-blue-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="acessar">Acessar</button>
 
             </div>
         </div>
@@ -53,20 +95,27 @@
 </template>
 
 <script>
-import TableView from "@/components/Table/TableView.vue";
+import router from "../router/routes";
+import TableDiagnostico from "../components/Table/TableDiagnostico.vue";
 import http from '@/services/http.js';
 import TitleView from "../components/Title/TitleView.vue";
 import LoadingCircle from "../components/loading/LoadingCircle.vue";
 
+
 export default {
   name: "DashBoard",
   components: {
-    TableView, TitleView, LoadingCircle
+     TitleView, LoadingCircle,TableDiagnostico
   },
   data() {
     return {
+      today: new Date().toISOString().split('T')[0], 
       loading:false,
+      startDate:null,
+      findName: "",
+      endDate:new Date().toISOString().split('T')[0],
       results: [],
+      dataMin: "2024-06-10",
       openModal: true,
       modalContent:{},
       diagnostico:{
@@ -88,12 +137,15 @@ export default {
      console.log(error)
     }
   },
+  acessar(){
+    router.push({ name: 'DiagnosticoController', params: { id: this.modalContent.slug } })
+  },
   copiar(){
     const text= "https://diagnostico.dourasoft.com.br/user/"+this.modalContent.slug
     navigator.clipboard.writeText(text).then(() => {
         alert("Texto copiado para a área de transferência!");
       }).catch(err => {
-        console.error("Erro ao copiar texto: ", err);
+       throw(err);
       });
   },
   cleanValues(json){
@@ -102,27 +154,17 @@ export default {
   },
   async getResults() {
     try {
+      this.loading  = true;
       const response = await http.get('/results');
       const results = response.data.templates;
-      this.results = await Promise.all(results.map(async item => {
-        const nomeDiagnostico = await this.getNameTemplate(item.template_id);
-        const infDiagnostico = JSON.parse(item.values)
-        return {
-          nomeLoterica: item.name,
-          values: this.cleanValues(infDiagnostico),
-          tipoDiagnostico: nomeDiagnostico,
-          slug:item.slug,
-          implementar: {
-            name: item.name,
-            values: item.values,
-            id: item.id,
-            slug: item.slug
-          }
-        };
-      }));
+      
+      this.ajusteResults(results)
+      this.loading  = false;
     } catch (error) {
-      console.error(error);
+      this.loading  =false;
+      console.log(error);
     }
+    
   },
     showDetails(details) {
       this.modalContent = details;
@@ -152,7 +194,7 @@ export default {
        alert("Diagnóstico Atualizado com sucesso")
        this.loading = false;
       } catch (error) {
-        console.log(error)
+        this.loading = false;
       }
       } 
     },
@@ -165,13 +207,68 @@ export default {
 
           window.location.reload();
         } catch (error) {
-          alert("Diagnóstico Não foi Apagado,chame o Kelvin")
+          alert("Diagnóstico Não foi Apagado")
           this.loading = false;
 
-          console.log(error.response)
         }
+    },
+    async filtroData(){
+      if(this.startDate == null){
+        if(this.findName == "")alert("Por favor preencha corretamente")
+        else{
+      try {
+            this.loading = true;   
+            const data = await http.post("/resultado",{"name":this.findName})
+            const results = data.data.results;
+            this.ajusteResults(results) 
+            this.loading = false; 
+      } catch (error) {
+        this.loading = false; 
+        console.log(error)
+      }
+
+        }
+      }
+      else{
+        this.loading = true;      
+        let obj  = {
+        "data_inicial": this.startDate,
+        "data_final": this.endDate
+      }
+      if(this.findName != ""){
+        obj.name=this.findName
+      }
+
+      try {
+        const data = await http.post("/resultado",obj)
+        const results = data.data.results;
+        this.ajusteResults(results)
+      this.loading = false;
+
+      } catch (error) {
+        this.loading = false;
+        console.log(error)
+      }
+    }},
+    async ajusteResults(array){
+      this.results = await Promise.all(array.map(async item => {
+        const nomeDiagnostico = await this.getNameTemplate(item.template_id);
+        const infDiagnostico = JSON.parse(item.values)
+        return {
+          nomeLoterica: item.name,
+          values: this.cleanValues(infDiagnostico),
+          tipoDiagnostico: nomeDiagnostico,
+          implementar: {
+            name: item.name,
+            values: item.values,
+            id: item.id,
+            slug: item.slug
+          }
+        };
+      }));
     }
   },
+  
   mounted() {
     this.getResults();
   }

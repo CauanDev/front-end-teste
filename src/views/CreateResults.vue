@@ -67,8 +67,8 @@
 
               <div class="text-center">
                 <label class="block text-gray-700 text-sm font-bold mb-1" for="email">
-                  Salário Gerente
-                  <br>
+                  Salário<br>Gerente
+                  
                 </label>
                 <select v-model="body.salarioGerente"
                 class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -81,8 +81,7 @@
 
               <div class="text-center">
                 <label class="block text-gray-700 text-sm font-bold mb-1" for="email">
-                  Salário Lotérico
-                  <br>
+                  Salário<br>Lotérico
                 </label>
                 <select v-model="body.salarioLoterico"
                 class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
@@ -160,9 +159,6 @@ import LoadingCircle from '../components/loading/LoadingCircle.vue';
 
           try {
           this.loading = true
-           this.body.tempoFecharTFL =   this.body.tempoFecharTFL+" Min"
-           this.body.tempoLancarCaixa =   this.body.tempoLancarCaixa+" Min"
-           this.body.tempoConferir =   this.body.tempoConferir+" Min"
 
            await http.post('/results',{
                 "nameTemplate":this.tipoDiagnostico,
@@ -174,7 +170,8 @@ import LoadingCircle from '../components/loading/LoadingCircle.vue';
               this.loading = false
               window.location.reload();
           } catch (error) {
-            console.log(error.response)
+            this.loading = false
+
           }
                    
         }
@@ -196,7 +193,7 @@ import LoadingCircle from '../components/loading/LoadingCircle.vue';
                   })
 
         } catch (error) {
-          console.log(error)
+         console.log(error)
         }
 
       }

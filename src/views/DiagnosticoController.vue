@@ -9,6 +9,7 @@
      :operatorSalary1=infResults.operatorSalary1
      :managerSalary1=infResults.managerSalary1
      :lotericoSalary1=infResults.lotericoSalary1
+     class="container mx-auto"
      />
    </div>
 
@@ -25,6 +26,7 @@
  import http from "@/services/http.js";
  import FechamentoCaixa from "../components/diagnostico/FechamentoCaixa.vue";
 import TitleView from "../components/Title/TitleView.vue";
+
  
  export default {
    name: "DiagnosticoController",

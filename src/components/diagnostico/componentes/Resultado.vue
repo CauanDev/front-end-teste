@@ -1,11 +1,10 @@
 <template>
-    <div :class="[!semMarca_Centro ? 'justify-end' : 'justify-start', 'flex h-6 w-28 items-center text-center rounded-lg bg-white pr-2.5 ps-12 font-semibold overflow-hidden']">
+    <div :class="[!semMarca_Centro ? 'justify-end' : 'justify-start', 'flex h-8 w-28 items-center text-center rounded-lg bg-white pr-2.5 ps-12 overflow-hidden font-medium']">
       <span :class="[!fontSize(value) ? 'text-sm' : 'text-xs']" class="max-w-20">
         {{ number() }}&nbsp;{{ extractIntFromString(value) }}{{ minORhour() }}
       </span>
     </div>
-  </template>
-  
+</template>  
   <script>
   export default {
     name: 'ResultadoView',

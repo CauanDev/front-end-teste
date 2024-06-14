@@ -34,9 +34,7 @@ const routes = [
     path:'/dashboard',
     name:'Dashboard',
     component: DashBoard,
-    meta: {
-      auth:true
-    }
+
   },
   {
     path:'/update',

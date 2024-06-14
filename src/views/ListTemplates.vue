@@ -36,8 +36,8 @@
               </div>
   
               <div class="flex items-center justify-center p-2 border-t border-gray-200 rounded-b">
-                <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" @click="atualizar">Gravar</button>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" @click="apagar">Apagar</button>
+                <button type="button" class="focus:outline-none text-white bg-[#337C24] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 " @click="atualizar">Gravar</button>
+              <button type="button" class="focus:outline-none text-white bg-[#FF3E30] hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  " @click="apagar">Apagar</button>
   
               </div>
           </div>
@@ -80,8 +80,7 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
         const response = await http.get('/users/'+id,);
         return response.data.user.name
       } catch (error) {
-        console.error(error);
-        throw error;
+        console.log(error);
       }
     },
   
@@ -105,7 +104,7 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
           };
         }));
       } catch (error) {
-        console.error(error);
+        console.log(error)
       }
     },
       showDetails(details) {
@@ -117,6 +116,7 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
     
       },
       async atualizar(){
+      this.loading = true
         var count=0;
         if(this.modalContent.nameTemplate!=this.template.nameTemplate )
         {
@@ -124,16 +124,13 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
         }  
         else count++
         if(count !=1){
-        try {
-        this.loading = true
-          
-         await http.put('/template',{"name":this.newTemplate.nameTemplate, "id": this.modalContent.id});
+        try {          
+         await http.put('/template/'+this.modalContent.id,{"name":this.newTemplate.nameTemplate});
          alert("Diagnóstico Atualizado com sucesso")         
          this.loading = false;
-
          window.location.reload();
         } catch (error) {
-          console.log(error)
+          this.loading = false;
         }
         } 
       },
@@ -141,13 +138,13 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
       try {
         this.loading = true
           const id = this.modalContent.id
-            await http.delete('/template/'+id  );
+            await http.delete('/template/'+id );
             alert("Template Apagado com sucesso")
-        this.loading = false;
+           this.loading = false;
 
             window.location.reload();
           } catch (error) {
-            console.log(error.response)
+            this.loading = false;
           }
       }
     },
