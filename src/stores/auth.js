@@ -6,9 +6,14 @@ export const useAuth = defineStore('auth', () => {
   const token = ref(localStorage.getItem("token"));
   const user = ref(JSON.parse(localStorage.getItem("user")));
 
-  function setToken(tokenValue) {
-    localStorage.setItem('token', tokenValue);
-    token.value = tokenValue;
+async function setToken(tokenValue) {
+    try {
+      localStorage.setItem('token', tokenValue);
+      token.value = tokenValue;   
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   function setUser(userValue) {

@@ -79,15 +79,19 @@ import LoadingCircle from "../components/loading/LoadingCircle.vue";
         
         
           try {
-              this.loading = true;
+              
+              this.loading = true;  
+                         
               const {data} = await http.post('/login',this.user);
-              const auth = useAuth();
-              auth.setUser(data.user);
+              const auth = await useAuth(); 
               auth.setToken(data.token);
+              auth.setUser(data.user);
+              
               this.loading = false;
 
-              this.$router.push({ name: "Dashboard" });
+              this.$router.push({ name: "Users" });
           } catch (error) {
+            console.log(error)
             this.wrongPassword = true;
             this.loading = false;
           }

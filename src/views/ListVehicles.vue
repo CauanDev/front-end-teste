@@ -10,8 +10,8 @@
          <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal">Aplicar Filtros</button>
        </div>
      </div>
-     <div class="flex justify-center">
-        <TableView :headers="['Nome','Email','Criado Em','Ver Detalhes']" :body="users" @showDetails="showDetails" class="w-[50%]"/>  
+     <div class="flex justify-center max-h-[420px] overflow-y-auto">
+      <TableView :headers="headers" :body="users" @showDetails="showDetails" class="w-[50%]"/>  
      </div>
    
      <div id="default-modal" :class="{'hidden': openModal}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -25,12 +25,12 @@
                  </div>
                  <div v-if="modalUser">
                    <h3 class="text-xl font-semibold text-gray-900">
-                     Criar Propietário
+                     Criar Veículo
                    </h3>                
                  </div>
                  <div v-if="modalUpdate">
                    <h3 class="text-xl font-semibold text-gray-900">
-                     Alterar {{ modalContent.name }}
+                     Alterar {{ modalContent.brand +" "+ modalContent.model +" "+ modalContent.year }}
                    </h3>                
                  </div>
    
@@ -43,59 +43,129 @@
                </div>            
                <div class="p-4 md:p-5 space-y-4">
                  <div v-if="modalUser"> 
+                  <div>
+                    <label  class="block text-sm font-medium text-gray-900 ">Selecione o Proprietário</label>
+                    <select v-model="vehicles.owner_id"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                      <option
+                        v-for="vehicle in allVehicles"
+                        :key="vehicle.id"
+                        :value="vehicle.id">
+                        {{ vehicle.name }}
+                      </option>
+
+                    </select>
+                  </div>
                    <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Digite Nome</label>
-                       <input v-model="user.name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo nome" />
+                    <label  class="block text-sm font-medium text-gray-900 ">Selecione a Marca</label>
+                    <select v-model="vehicles.brand"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                      <option value="Fiat">Fiat</option>
+                      <option value="Ford">Ford</option>
+                      <option value="Chevrolet">Chevrolet</option>
+                      <option value="Volkswagen">Volkswagen</option>
+                      <option value="Toyota">Toyota</option>
+                      <option value="Honda">Honda</option>
+                      <option value="Hyundai">Hyundai</option>
+                      <option value="Renault">Renault</option>
+                      <option value="Nissan">Nissan</option>
+                      <option value="Mercedes-Benz">Mercedes-Benz</option>
+                    </select>
+                  </div>
+                   <div>
+                       <label class="block mb-2 text-sm font-medium text-gray-900">Digite o Modelo do Carro</label>
+                       <input v-model="vehicles.model" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o modelo" />
                    </div>
                    <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Digite Senha</label>
-                       <input v-model="user.password" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite a nova senha" />
-                   </div>
-                   <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Digite Email</label>
-                       <input v-model="user.email" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo email" />
+                       <label class="block mb-2 text-sm font-medium text-gray-900">Digite o Modelo do Carro</label>
+                       <input v-model="vehicles.year" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o ano" />
                    </div>
                  </div>
                  <div v-if="modalUpdate">
                    <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Alterar Nome</label>
-                       <input v-model="user.name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo nome" />
+                       <label class="block mb-2 text-sm font-medium text-gray-900">Alterar Modelo</label>
+                       <input v-model="newVehicles.model" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo nome" />
                    </div>
+
                    <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Alterar Senha</label>
-                       <input v-model="user.password" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite a nova senha" />
+                       <label class="block mb-2 text-sm font-medium text-gray-900">Alterar Ano</label>
+                       <input v-model="newVehicles.year" type="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo nome" />
                    </div>
+
                    <div>
-                       <label class="block mb-2 text-sm font-medium text-gray-900">Alterar Email</label>
-                       <input v-model="user.email" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o novo email" />
-                   </div>
+                      <label  class="block text-sm font-medium text-gray-900 ">Selecione a Marca</label>
+                      <select v-model="newVehicles.brand"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="Fiat">Fiat</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Renault">Renault</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                      </select>
+                    </div>
+                    <div>
+                       <label class="block mb-2 text-sm font-medium text-gray-900">Última Revisão</label>
+                       <input v-model="newVehicles.last_service" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled />
+                   </div> 
                  </div>
                  <div v-if="modalFilter">
                    <div class="flex flex-col gap-1.5 text-center">
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex flex-col gap-2 items-center justify-center">
+                      Ordenar por:
+                      <div class="flex gap-1">
+                        <div class="flex flex-col items-center mb-4">
+                            <input 
+                            v-model="filter.nameOwners"
+                            @change="toggleCheckbox('nameOwners')"
+                            type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label  class="ms-2 text-sm font-medium">Nome de Proprietários</label>
+                        </div>
 
-                         <div class="flex flex-col">
-                           <label for="endDate" class="text-sm font-medium text-gray-700">Nome Proprietário</label>
-                           <input type="text" placeholder="Digite o Nome" v-model="filterName" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
-                         </div>
-                       </div>
+                        <div class="flex flex-col items-center mb-4">
+                            <input  
+                            v-model="filter.moreServices"   
+                            @change="toggleCheckbox('moreServices')"                                
+                            type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label  class="ms-2 text-sm font-medium">Marcas com Mais Revisão</label>
+                        </div>
+
+                        <div class="flex flex-col items-center mb-4">
+                            <input  
+                            v-model="filter.countModel"
+                            @change="toggleCheckbox('countModel')"    
+                            type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
+                            <label  class="ms-2 text-sm font-medium">Número de Veículos por Marca</label>
+                        </div>
+
+                      </div>
+
+                      </div>
                      <div class="flex gap-2 items-center justify-center">
-                       <div>
-                         <label  class="block text-sm font-medium text-gray-900 ">Selecione o Sexo</label>
-                         <select v-model="sex"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                           <option value="A" selected>Todos as opções</option>
-                           <option value="H">Masculino</option>
-                           <option value="M">Feminino</option>
-                         </select>
-                       </div>
-                       <div>    
-                           <label for="startDate" class="text-sm font-medium text-gray-700">Idade Mínima</label>
-                           <input type="text" v-model="minAge" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
-                       </div>
-                       <div>    
-                           <label for="startDate" class="text-sm font-medium text-gray-700">Idade Máxima</label>
-                           <input type="text" v-model="maxAge" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
-                       </div>
+                      <div>
+                      <label  class="block text-sm font-medium text-gray-900 ">Selecione a Marca</label>
+                      <select v-model="filter.brand"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="Fiat">Fiat</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Renault">Renault</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                      </select>
+                    </div>
+                       <div class="flex flex-col ">    
+                           <label for="startDate" class="text-sm font-medium text-gray-700">Data Início</label>
+                           <input type="date" @input="filter.startDate = $event.target.value" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
+                         </div>
+                         <div class="flex flex-col">
+                           <label for="endDate" class="text-sm font-medium text-gray-700">Data Final</label>
+                           <input type="date" @input="filter.endDate = $event.target.value" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
+                         </div>
    
                      </div>
                    </div>
@@ -106,14 +176,14 @@
    
                <div class="flex items-center justify-center justify-end p-2 border-t border-gray-200 rounded-b">
                  <div v-if="modalUser">
-                   <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="addUser">Criar Usuário</button>
+                   <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="addVehicles">Criar Usuário</button>
                  </div>
                  <div v-if="modalUpdate">
                    <button type="button" class="focus:outline-none text-white bg-[#337C24] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="atualizar">Gravar</button>
                    <button type="button" class="focus:outline-none text-white bg-[#FF3E30] hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="apagar">Apagar</button>
                  </div>
                  <div v-if="modalFilter">
-                   <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="filter">Aplicar Filtro</button>
+                   <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" @click="Setfilter">Aplicar Filtro</button>
                  </div>
                </div>
            </div>
@@ -129,7 +199,6 @@
      import http from '@/services/http.js';
      import TitleView from '../components/Title/TitleView.vue';
      import TableView from '../components/Table/TableView.vue';
-     import { format } from 'date-fns'; 
      import LoadingCircle from '../components/loading/LoadingCircle.vue';
      
      export default {
@@ -139,11 +208,15 @@
        },
        data() {
          return {
-           maxAge: '',
-           minAge: '',
-           filterName: '',
+           nameOwners: null,
+           countModel: null,
+           count:null,
+           filter:{},
+           headers:['Nome','Quantidade Revisão','Última Revisão','Ver Detalhes'],
            loading: false,
            users: [],
+           vehicles:{},
+           newVehicles:{},
            sex: 'A',
            startDate: '',
            endDate: '',
@@ -153,15 +226,12 @@
            openModal: true,
            newUser:{},
            modalContent:'',
-           user: {
-             name: '',
-             password:'',
-             email:''        
-           }
+
      
          };
        },
        methods: {
+   
        close(){
          this.modalContent= '',
          this.openModal = true;
@@ -174,32 +244,67 @@
          this.openModal = false;
    
        },
-       async getResults(){
-         try {
-           const data = await http.get('/users');
-           this.users = data.data.users.map(user => {
+       async setUsers(array)
+       {
+        this.users = array.map(user => {
                return {
-                
-                 name: user.name,
-                 email: user.email,      
-                 created_at: format(new Date(user.created_at), 'dd/MM/yyyy'),
+                 name: user.brand+" "+user.model,
+                 email: user.number_services? user.number_services:0 ,      
+                 created_at: user.last_service? user.last_service:"Não foi Agendado Nenhuma",
                  implementar: {
-                   name: user.name,
-                   email: user.email,     
-                   id: user.id,
-                   password: user.password
+                    id:user.id,
+                    owner_id: user.owner_id,
+                    number_services: user.number_services,
+                    brand:user.brand,
+                    model: user.model,
+                    year: user.year,
+                    last_service: user.last_service? user.last_service:"Não foi Agendado Nenhuma",
+
                  }
      
                };
              }
      
            );
-     
+       },
+       async getResults(){
+        this.loading = true;
+         try {
+          const data = await http.get('/cars-all');
+          this.setUsers(data.data.cars)
+          const cars = await http.get('/owners-all');
+          this.allVehicles = cars.data.owners
+
          } catch (error) {
            console.log(error.response)
          }
-         
+         this.loading = false;
          },
+         toggleCheckbox(option){
+
+          if(option == 'moreServices' && !this.filter.moreServices)this.filter.moreServices = false
+          if(option == 'countModel' && !this.filter.countModel)this.filter.countModel = false
+          if(option == 'nameOwners' && !this.filter.nameOwners)this.filter.nameOwners = false
+
+          if(option == 'moreServices' &&this.filter.moreServices)
+          {
+            this.filter.countModel = false;
+            this.filter.moreServices = true
+          }
+
+
+          if(option == 'countModel' && this.filter.countModel){
+              this.filter.nameOwners = false;
+              this.filter.moreServices = false  
+              this.filter.countModel = true        
+          }
+          console.log(this.filter.nameOwners)
+          if(option == 'nameOwners' && this.filter.nameOwners){
+            this.filter.nameOwners = true
+            this.filter.countModel = false;
+          }
+         },
+
          openUserModal(){
            this.user = {
              name: '',
@@ -209,47 +314,48 @@
            this.modalUser= true;
            this.openModal = false;
          },
-         addUser(){
-           console.log(this.user)
+         async addVehicles(){
+          if (Object.keys(this.vehicles).length != 4){
+            alert("Por Favor Preencha Corretamente!")
+          }
+          else{
+            this.loading = true;
+            try {
+              await http.post('/cars-register', this.vehicles)  
+              alert("Veículo Adicionado com Sucesso!")
+              window.location.reload()
+            } catch (error) {
+              console.log(error)
+            }
+            this.loading = false;
+
+          }
          },
          showDetails(details) {
            this.modalContent = details;
-           this.newUser.name = details.name;
-           this.newUser.email = details.email;
-           this.newUser.password = details.password;
-           this.user.name = details.name
-           this.user.email = details.email
-           this.openModal = false;
+           this.newVehicles = {... details};
            this.modalUpdate = true;
+           this.openModal = false;
+
          },
          async atualizar(){
-             var count=0;
-           
-             if(this.modalContent.name!=this.user.name)
-             {
-               this.newUser.name = this.user.name;
-             }  
-             else count++
-             if(this.modalContent.email!=this.user.email && !/\s/.test(this.user.email) )
-             {
-               this.newUser.email = this.user.email;
-             } else count++ 
-             if(this.modalContent.password!=this.user.password && (this.user.password!='') )
-             {
-               this.newUser.password = this.user.password;
-             } else count++
-     
-             if(count != 3){
+          this.loading = true
+            if(JSON.stringify(this.modalContent) === JSON.stringify(this.newVehicles))
+            {
+              alert("Por favor Verifique Novamente")
+            }
+            else
+            {
              try {
-               this.loading = true
-              await http.put('/users/'+this.modalContent.id,this.newUser);
+              await http.put('/cars-update',this.newVehicles);
               alert("Usuário Atualizado com sucesso")
-              this.loading = false
               window.location.reload();
              } catch (error) {
-               this.loading = false
-             }
-             } 
+               console.log(error)
+             }              
+            }
+            this.loading = false
+             
       
              
            
@@ -257,31 +363,62 @@
          async apagar(){
            try {
              this.loading = true
-               await http.delete('/users/'+this.modalContent.id,this.newUser);
-               alert("Usuário Apagado com sucesso")
+               await http.delete('/cars-delete/'+this.modalContent.id);
+               alert("Carro Apagado com sucesso")
                this.loading = false
                window.location.reload();
              } catch (error) {
+              console.log(error)
                this.loading = false
              }
          },
-         async filter(){
-           let users  = { }
-   
-           if(this.sex !== 'A')users.sex = this.sex;
-           if(this.minAge !=='')users.minAge = this.minAge;
-           if(this.maxAge !=='')users.maxAge = this.maxAge;
-           if(this.endDate !=='')users.endDate = this.endDate;
-           if(this.startDate !=='')users.startDate = this.startDate;
-           if(this.name !=='')users.name = this.name;
-           if (Object.keys(users).length === 1) 
-           {
-             alert("O objeto users está vazio.");
-           } 
-           else 
-           {
-             alert("O objeto users não está vazio.");
-           }
+         async Setfilter(){
+         this.loading = true;
+          if (Object.keys(this.filter).length === 0 || this.filter.startDate > this.filter.endDate)
+          {
+            alert("Por favor Verifique Novamente")
+          }
+          else
+          {
+            try {
+              const data = await http.post('/cars-filter',this.filter)
+              if(data.data.length==0){
+                alert("Sua Consulta Retornou Zero");
+              }
+              if(this.filter.countModel)
+              {
+                console.log(data.data)
+                this.users = data.data.map(user => {
+               return {
+                 name:user.model,
+                 email: user.car_count ,      
+                 implementar: {
+                    id:user.id,
+                    owner_id: user.owner_id,
+                    number_services: user.number_services,
+                    brand:user.brand,
+                    model: user.model,
+                    year: user.year,
+                    last_service: user.last_service? user.last_service:"Não foi Agendado Nenhuma",
+
+                 }
+     
+               };
+             });
+             this.headers = ["Modelo Carro","Quantidade","Mais Detalhes"]
+              }
+              else
+              {
+                this.setUsers(data.data)
+                this.close();
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }
+          this.loading = false;
+
+
          }
        },
        watch:{
