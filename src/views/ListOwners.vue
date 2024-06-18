@@ -51,9 +51,19 @@
         <div
           class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
         >
-        <div v-if="modalUpdate">
+        <div v-if="modalUser">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Criar Proprietário
+            </h3>
+          </div>
+          <div v-if="modalUpdate">
             <h3 class="text-xl font-semibold text-gray-900">
               Alterar {{ modalContent.carName }}
+            </h3>
+          </div>
+          <div v-if="modalFilter">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Aplicar Filtro
             </h3>
           </div>
           <div v-if="modalChart">
@@ -265,7 +275,7 @@
           </div>
           <div v-if="modalFilter">
             <div class="flex flex-col gap-1.5 text-center">
-              <div class="flex gap-2 items-center justify-center">
+              <div class="flex gap-2 items-center justify-center mobile">
                 <div class="flex flex-col">
                   <label
                     for="startDate"
@@ -300,7 +310,7 @@
                   />
                 </div>
               </div>
-              <div class="flex gap-2 items-center justify-center">
+              <div class="flex gap-2 items-center justify-center mobile">
                 <div>
                   <label class="block text-sm font-medium text-gray-900"
                     >Selecione o Sexo</label
@@ -343,8 +353,8 @@
           </div>
         </div>
 
-        <div v-if="modalChart" class="flex flex-col">
-          <div class="w-[50%] flex">
+        <div v-if="modalChart" class="flex flex-col mobile">
+          <div class="w-[50%] flex mobile">
             <SexChard :users="filterChar" />
             <div v-if="!splitBySex">
               <CountChart :users="filterChar" />
@@ -353,7 +363,7 @@
               <CountChardSplit :users="filterChar" />
             </div>
           </div>
-          <div class="w-[50%] flex">
+          <div class="w-[50%] flex  mobile">
 
             <div v-if="!splitBySex">
               <AgeChard :users="filterChar" />

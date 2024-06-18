@@ -32,12 +32,12 @@
       </button>
     </div>
   </div>
-  <div class="flex justify-center max-h-[420px] overflow-y-auto">
+  <div class="flex justify-center max-h-[420px]">
     <TableView
       :headers="headers"
       :body="services"
       @showDetails="showDetails"
-      class="w-[50%]"
+  
     />
   </div>
 
@@ -275,14 +275,14 @@
             </div>
           </div>
           <div v-if="modalChart" class="flex flex-col">
-          <div class="w-[50%] flex">
+          <div class="w-[50%] flex mobile">
             <CountServices :users="filterChar" />
             <CountServicesSplit :users="filterChar"/>
           </div>                                                                           
         </div>
           <div v-if="modalFilter">
             <div class="flex flex-col gap-1.5 text-center">
-              <div class="flex gap-2 items-center justify-center">
+              <div class="flex gap-2 items-center justify-center mobile">
                 <div class="flex flex-col">
 
              

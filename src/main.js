@@ -1,10 +1,8 @@
-// src/main.js
 import { createApp } from 'vue';
 import App from './App.vue';
 import { createPinia } from 'pinia'
 import router from './router/routes';
 import 'tailwindcss/tailwind.css'
-
 
 
 

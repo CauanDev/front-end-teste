@@ -7,9 +7,9 @@
   </div>
   <div>
     <div class="flex justify-center w-full mt-10">
-      <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal">Adicionar Usuário</button>
-      <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal">Aplicar Filtros</button>
-      <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2" @click="openChardModal">Visualizar Gráficos</button>
+      <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal" :disabled="loading">Adicionar Usuário</button>
+      <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal" :disabled="loading">Aplicar Filtros</button>
+      <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2" @click="openChardModal" :disabled="loading">Visualizar Gráficos</button>
     </div>
 
   </div>
@@ -79,7 +79,7 @@
               </div>
               <div v-if="modalFilter">
                    <div class="flex flex-col gap-1.5 text-center">
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex gap-2 items-center justify-center mobile">
                          <div class="flex flex-col">
                            <label for="endDate" class="text-sm font-medium text-gray-700">Nome Usuário</label>
                            <input type="text" placeholder="Digite o Nome" v-model="filter.name" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
@@ -190,6 +190,7 @@ export default {
 
     try {
       const data = await http.get('/users-all');
+      console.log(data)
       this.mapUser(data.data.users)
       this.loading = false;
     } catch (error) {

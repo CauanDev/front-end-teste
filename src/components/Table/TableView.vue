@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center max-h-[420px]">
-    <div class="w-full">
-      <table class="w-full text-sm text-left rtl:text-right text-black">
+    <div class="w-full md:w-full">
+      <table class="w-full md:w-full text-sm text-left text-black ">
         <thead class="text-xs uppercase bg-gray-300 text-center text-black sticky top-0">
           <tr>
             <th v-for="(header, index) in headers" :key="index" class="px-6 py-3 border-b border-gray-400">
@@ -29,26 +29,38 @@
     </div>
   </div>
 </template>
-  
-  <script>
-  export default {
-    name: 'TableView',
-    props: {
-      headers: {
-        type: Array,
-        required: true
-      },
-      body: {
-        type: Array,
-        required: true
-      }
+
+<script>
+export default {
+  name: 'TableView',
+  props: {
+    headers: {
+      type: Array,
+      required: true
     },
-    methods: {
+    body: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
     handleClick(details) {
       this.$emit('showDetails', details);
     }
   }
-  };
-  </script>
+};
+</script>
 
-  
+<style scoped>
+@media (max-width: 640px) {
+  table {
+    width: 80%; /* Ajusta a largura da tabela para ocupar toda a largura disponível */
+    border-collapse: collapse; /* Mescla as bordas das células */
+    margin: 0 auto; /* Centraliza a tabela horizontalmente */
+  }
+  th, td {
+    padding: 8px; /* Adiciona um espaçamento interno */
+    text-align: left; /* Alinha o texto à esquerda dentro das células */
+  }
+}
+</style>

@@ -6,12 +6,12 @@
      </div>
      <div>
        <div class="flex justify-center w-full mt-10">
-         <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal">Adicionar Veículo</button> 
-         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal">Aplicar Filtros</button>
+         <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal" :disabled="loading">Adicionar Veículo</button> 
+         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal" :disabled="loading">Aplicar Filtros</button>
        </div>
      </div>
-     <div class="flex justify-center max-h-[420px] overflow-y-auto">
-      <TableView :headers="headers" :body="users" @showDetails="showDetails" class="w-[50%]"/>  
+     <div class="flex justify-center w-[20%]">
+      <TableView :headers="headers" :body="users" @showDetails="showDetails" class="w-[30px]" />  
      </div>
    
      <div id="default-modal" :class="{'hidden': openModal}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -142,7 +142,7 @@
                       </div>
 
                       </div>
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex gap-2 items-center justify-center mobile">
                       <div>
                       <label  class="block text-sm font-medium text-gray-900 ">Selecione a Marca</label>
                       <select v-model="filter.brand"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -250,7 +250,7 @@
                return {
                  name: user.brand+" "+user.model,
                  email: user.number_services? user.number_services:0 ,      
-                 created_at: user.last_service? user.last_service:"Não foi Agendado Nenhuma",
+                 created_at: user.last_service? user.last_service:"Nenhum Agendamento",
                  implementar: {
                     id:user.id,
                     owner_id: user.owner_id,
@@ -258,7 +258,7 @@
                     brand:user.brand,
                     model: user.model,
                     year: user.year,
-                    last_service: user.last_service? user.last_service:"Não foi Agendado Nenhuma",
+                    last_service: user.last_service? user.last_service:"Nenhum Agendamento",
 
                  }
      
@@ -438,5 +438,11 @@
        }
      };
      </script>
-     
+     <style>
+     @media (max-width: 640px) {
+    .mobile{
+      flex-direction: column;
+    }
+  }
+    </style>
      

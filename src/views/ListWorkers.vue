@@ -6,13 +6,13 @@
      </div>
      <div>
        <div class="flex justify-center w-full mt-10">
-         <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal">Adicionar Funcionário</button> 
-         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal">Aplicar Filtros</button>
-         <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2" @click="openChardModal">Visualizar Gráficos</button>
+         <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openUserModal" :disabled="loading">Adicionar Funcionário</button> 
+         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal" :disabled="loading">Aplicar Filtros</button>
+         <button type="button" class="focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2" @click="openChardModal" :disabled="loading">Visualizar Gráficos</button>
        </div>
      </div>
-     <div class="flex justify-center max-h-[420px] overflow-y-auto">
-      <TableView :headers="['Nome','Salário','Criado Em','Ver Detalhes']" :body="users" @showDetails="showDetails" class="w-[50%]"/>  
+     <div class="flex justify-center max-h-[420px]">
+      <TableView :headers="['Nome','Salário','Criado Em','Ver Detalhes']" :body="users" @showDetails="showDetails" />  
      </div>
    
      <div id="default-modal" :class="{'hidden': openModal}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -104,8 +104,8 @@
                        <input v-model="worker.adress" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Digite o Endereço" />
                    </div>
                  </div>
-                 <div v-if="modalChart" class="flex flex-col">
-                  <div  class="w-[50%] flex">
+                 <div v-if="modalChart" class="flex flex-col mobile">
+                  <div  class="w-[50%] flex mobile">
                     <SexChard :users="filterChar"/>
                     <div v-if="!splitBySex">
                       <CountChart :users="filterChar" />                          
@@ -115,7 +115,7 @@
                     </div>
                 
                   </div>
-                  <div class="w-[50%] flex">
+                  <div class="w-[50%] flex mobile">
                     <div v-if="!splitBySex">
                       <SalaryChard :users="filterChar"/>
                     </div>
@@ -165,7 +165,7 @@
                  </div>
                  <div v-if="modalFilter">
                    <div class="flex flex-col gap-1.5 text-center">
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex gap-2 items-center justify-center mobile">
                          <div class="flex flex-col">
                            <label for="endDate" class="text-sm font-medium text-gray-700">Nome Funcionário</label>
                            <input type="text" placeholder="Digite o Nome" v-model="filterName" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
@@ -181,7 +181,7 @@
 
 
                        </div>
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex gap-2 items-center justify-center mobile">
                        <div>
                          <label  class="block text-sm font-medium text-gray-900 ">Selecione o Sexo</label>
                          <select v-model="filter.sex"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -200,7 +200,7 @@
                        </div>
    
                      </div>
-                     <div class="flex gap-2 items-center justify-center">
+                     <div class="flex gap-2 items-center justify-center mobile">
                        <div>    
                            <label  class="text-sm font-medium text-gray-700">Salário Mínimo</label>
                            <input type="text" v-model="minSalary" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
