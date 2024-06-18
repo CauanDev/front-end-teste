@@ -179,7 +179,9 @@
               >
               <input
                 v-model="user.age"
-                type="text"
+                type="number"
+                min="1"
+                max="999"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Digite a Idade"
               />
@@ -394,7 +396,7 @@
               class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
               @click="addUser"
             >
-              Criar Usuário
+              Criar Veículo
             </button>
           </div>
           <div v-if="modalUpdate">
@@ -457,7 +459,6 @@ export default {
     return {
       maxAge: "",
       minAge: "",
-      filterName: "",
       body: {},
       loading: false,
       users: [],
@@ -628,7 +629,7 @@ export default {
           "/delete-owner/" + this.modalContent.id,
           this.newUser
         );
-        alert("Usuário Apagado com sucesso");
+        alert("Veículo Apagado com sucesso");
         this.loading = false;
         window.location.reload();
       } catch (error) {
@@ -658,15 +659,7 @@ export default {
     },
   },
   watch: {
-    minAge(newVal) {
-      this.minAge = newVal.replace(/\D+/g, "");
-    },
-    maxAge(newVal) {
-      this.maxAge = newVal.replace(/\D+/g, "");
-    },
-    filterName(newVal) {
-      this.filterName = newVal.replace(/\d+/g, "");
-    },
+
   },
   mounted() {
     this.getResults();

@@ -6,7 +6,8 @@ import ListOwners from "@/views/ListOwners.vue"
 import ListVehicles from "@/views/ListVehicles.vue"
 import ListServices from "@/views/ListServices.vue"
 import ListWorkers from "@/views/ListWorkers.vue"
-import  NotFoundComponent  from "@/views/NotFoundComponent.vue"
+import NotFoundComponent  from "@/views/NotFoundComponent.vue"
+import DashBoard from "@/views/DashBoard.vue"
 const routes = [
 
   {
@@ -17,6 +18,14 @@ const routes = [
       auth:true
     }
   
+  },
+  {
+    path: '/dashboard',
+    name:'DashBoard',
+    component: DashBoard,
+    meta: {
+      auth:true
+    }
   },
   {
     path: '/',

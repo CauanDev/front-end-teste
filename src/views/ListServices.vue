@@ -425,7 +425,7 @@
               class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
               @click="addService"
             >
-              Criar Usuário
+              Criar Revisão
             </button>
           </div>
           <div v-if="modalUpdate">
@@ -602,7 +602,7 @@ export default {
         try {
           this.loading = true;
           await http.put("/service-update", this.newService);
-          alert("Usuário Atualizado com sucesso");
+          alert("Revisão Atualizado com sucesso");
           this.loading = false;
           window.location.reload();
         } catch (error) {
@@ -615,7 +615,7 @@ export default {
       try {
         this.loading = true;
         await http.delete("/service-delete/" + this.newService.owner_id);
-        alert("Usuário Apagado com sucesso");
+        alert("Revisão Apagado com sucesso");
         this.loading = false;
         window.location.reload();
       } catch (error) {

@@ -10,8 +10,8 @@
          <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="openFilterModal" :disabled="loading">Aplicar Filtros</button>
        </div>
      </div>
-     <div class="flex justify-center w-[20%]">
-      <TableView :headers="headers" :body="users" @showDetails="showDetails" class="w-[30px]" />  
+     <div class="flex justify-center w-full">
+      <TableView :headers="headers" :body="users" @showDetails="showDetails"  />  
      </div>
    
      <div id="default-modal" :class="{'hidden': openModal}" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -176,7 +176,7 @@
    
                <div class="flex items-center justify-center justify-end p-2 border-t border-gray-200 rounded-b">
                  <div v-if="modalUser">
-                   <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="addVehicles">Criar Usuário</button>
+                   <button type="button" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="addVehicles">Criar Veículo</button>
                  </div>
                  <div v-if="modalUpdate">
                    <button type="button" class="focus:outline-none text-white bg-[#337C24] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" @click="atualizar">Gravar</button>
@@ -348,7 +348,7 @@
             {
              try {
               await http.put('/cars-update',this.newVehicles);
-              alert("Usuário Atualizado com sucesso")
+              alert("Veículo Atualizado com sucesso")
               window.location.reload();
              } catch (error) {
                console.log(error)
@@ -364,7 +364,7 @@
            try {
              this.loading = true
                await http.delete('/cars-delete/'+this.modalContent.id);
-               alert("Carro Apagado com sucesso")
+               alert("Veículo Apagado com sucesso")
                this.loading = false
                window.location.reload();
              } catch (error) {
