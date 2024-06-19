@@ -111,7 +111,7 @@
                    </div> 
                  </div>
                  <div v-if="modalFilter">
-                   <div class="flex flex-col gap-1.5 text-center">
+                  <div class="flex flex-col gap-1.5 text-center">
                      <div class="flex flex-col gap-2 items-center justify-center">
                       Ordenar por:
                       <div class="flex gap-1">
