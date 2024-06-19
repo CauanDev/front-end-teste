@@ -92,8 +92,6 @@
                            <label for="endDate" class="text-sm font-medium text-gray-700">Data Final</label>
                            <input type="date" @input="filter.endDate = $event.target.value" class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm">      
                          </div>
-
-
                        </div>
                    </div>                   
                 </div>
