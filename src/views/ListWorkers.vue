@@ -26,7 +26,7 @@
                  </div>
                  <div v-if="modalUser">
                    <h3 class="text-xl font-semibold text-gray-900">
-                      Criar Funcionário
+                      Criar Funcionário   
                    </h3>                
                  </div>
                  <div v-if="modalUpdate">
