@@ -67,103 +67,32 @@
         </svg>
         Imprimir Reltório
       </button>
+      
     </div>
   </div>
-  <div class="flex justify-center max-h-[420px] overflow-y-auto">
+  <div class="flex justify-center flex-col w-full overflow-y-auto items-center">
     <TableNormal :headers="headers" :body="array" class="w-[50%]" />
+    <TableNormal :headers="subHeaders" :body="subArray" />
   </div>
 
   <div
     id="default-modal"
     :class="{ hidden: openModal }"
-    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-  >
+    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
       <div class="relative bg-white rounded-lg shadow">
         <div
-          class="flex items-center justify-between p-4 md:p-5 border-b rounded-t"
-        >
-          <div v-if="modalUser">
-            <h3 class="text-xl font-semibold text-gray-900">
-              Criar Proprietário
-            </h3>
-          </div>
-          <div v-if="modalUpdate">
-            <h3 class="text-xl font-semibold text-gray-900">
-              Alterar {{ modalContent.carName }}
-            </h3>
-          </div>
-          <div v-if="modalFilter">
-            <h3 class="text-xl font-semibold text-gray-900">
-              Visualizar Relatórios
-            </h3>
-          </div>
-          <div v-if="modalChart">
-            <h3 class="text-xl font-semibold text-gray-900">
-              Visualizar Gráficos
-            </h3>
-            <div class="flex gap-2">
-              Aplicar Gráficos:
-              <div>
-                <input
-                  v-model="allChecked"
-                  @change="toggleCheckbox('allChecked')"
-                  type="checkbox"
-                  value=""
-                  :disabled="allChecked"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label class="ms-2 text-sm font-medium">Todos</label>
-              </div>
-              <div>
-                <input
-                  v-model="filterChecked"
-                  @change="toggleCheckbox('filterChecked')"
-                  type="checkbox"
-                  value=""
-                  :disabled="filterChecked"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label class="ms-2 text-sm font-medium">Filtro</label>
-              </div>
-              <div>
-                <input
-                  v-model="splitBySex"
-                  type="checkbox"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label class="ms-2 text-sm font-medium"
-                  >Separar entre Gêneros</label
-                >
-              </div>
-            </div>
-          </div>
-          <button
-            type="button"
-            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-black-200 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-            data-modal-hide="default-modal"
-            @click="close"
-          >
-            <svg
-              class="w-3 h-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
+          class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          <h1 class="text-xl font-semibold text-gray-900">Selecionar Relatório de {{ getFilterName() }}</h1>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-black-200 rounded-lg text-sm ms-auto inline-flex justify-center items-center" data-modal-hide="default-modal" @click="close" >
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" >
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" /></svg> 
             <span class="sr-only">Close modal</span>
           </button>
         </div>
         <div class="p-4 md:p-5 space-y-4">
           <div v-if="modalFilter" class="flex gap-2">
+
             <div class="border-r border-gray px-2">
               <h3>Tema de Relatório:</h3>
               <div class="flex items-center">
@@ -246,15 +175,15 @@
               class="w-full flex justify-center"
             >
               <FilterOwner
-                v-model:startDate="filter.startDate"
-                v-model:endDate="filter.endDate"
-                v-model:name="filter.name"
-                v-model:sex="filter.sex"
-                v-model:minAge="filter.minAge"
-                v-model:maxAge="filter.maxAge"
-                v-model:brand="filter.brand"
-                v-model:order="filter.order"
-                v-model:ordenateOrder="filter.ordenateOrder"
+                v-model:startDate="filterOwner.startDate"
+                v-model:endDate="filterOwner.endDate"
+                v-model:name="filterOwner.name"
+                v-model:sex="filterOwner.sex"
+                v-model:minAge="filterOwner.minAge"
+                v-model:maxAge="filterOwner.maxAge"
+                v-model:brand="filterOwner.brand"
+                v-model:order="filterOwner.order"
+                v-model:ordenateOrder="filterOwner.ordenateOrder"
               />
             </div>
             <div
@@ -262,43 +191,54 @@
               class="w-full flex justify-center"
             >
               <FilterWorker
-                v-model:startDate="filter.startDate"
-                v-model:endDate="filter.endDate"
-                v-model:name="filter.name"
-                v-model:sex="filter.sex"
-                v-model:minAge="filter.minAge"
-                v-model:maxAge="filter.maxAge"
-                v-model:maxSalary="filter.maxSalary"
-                v-model:minSalary="filter.minSalary"
-                v-model:order="filter.order"
-                v-model:ordenateOrder="filter.ordenateOrder"
+                v-model:startDate="filterWorker.startDate"
+                v-model:endDate="filterWorker.endDate"
+                v-model:name="filterWorker.name"
+                v-model:sex="filterWorker.sex"
+                v-model:minAge="filterWorker.minAge"
+                v-model:maxAge="filterWorker.maxAge"
+                v-model:maxSalary="filterWorker.maxSalary"
+                v-model:minSalary="filterWorker.minSalary"
+                v-model:order="filterWorker.order"
+                v-model:ordenateOrder="filterWorker.ordenateOrder"
               />
             </div>
-            <div v-if="selectedFilter === 'users'" class="px-2 w-full">
+            <div
+              v-if="selectedFilter === 'users'"
+              class="w-full flex justify-center"
+            >
               <FilterUser
-                v-model:startDate="filter.startDate"
-                v-model:endDate="filter.endDate"
-                v-model:name="filter.name"
+                v-model:startDate="filterUser.startDate"
+                v-model:endDate="filterUser.endDate"
+                v-model:name="filterUser.name"
+                v-model:order="filterUser.order"
+                v-model:ordenateOrder="filterUser.ordenateOrder"
               />
             </div>
-            <div v-if="selectedFilter === 'cars'" class="px-2 w-full">
+            <div
+              v-if="selectedFilter === 'cars'"
+              class="w-full flex justify-center"
+            >
               <FilterVehicles
-                v-model:startDate="filter.startDate"
-                v-model:endDate="filter.endDate"
-                v-model:name="filter.name"
-                v-model:brand="filter.brand"
-                v-model:order="filter.order"
-                v-model:moreServiceSex="filter.moreServiceSex"
-                v-model:countModelSex="filter.countModelSex"
-              />
+                v-model:startDate="filterVehicles.startDate"
+                v-model:endDate="filterVehicles.endDate"
+                v-model:minYear="filterVehicles.minYear"
+                v-model:maxYear="filterVehicles.maxYear"
+                v-model:brand="filterVehicles.brand"
+                v-model:order="filterVehicles.order"
+                v-model:subOrder="filterVehicles.subOrder"
+                v-model:ordenateOrder="filterVehicles.ordenateOrder"/>
             </div>
-            <div v-if="selectedFilter === 'services'" class="px-2 w-full">
+            <div
+              v-if="selectedFilter === 'services'"
+              class="w-full flex justify-center"
+            >
               <FilterService
-                v-model:name="filter.name"
-                v-model:moreServices="filter.moreServices"
-                v-model:brand="filter.brand"
-                v-model:worker="filter.worker"
-                v-model:average="filter.average"
+                v-model:name="filterService.name"
+                v-model:moreServices="filterService.moreServices"
+                v-model:brand="filterService.brand"
+                v-model:worker="filterService.worker"
+                v-model:average="filterService.average"
               />
             </div>
           </div>
@@ -333,31 +273,7 @@
         <div
           class="flex items-center justify-center justify-end p-2 border-t border-gray-200 rounded-b"
         >
-          <div v-if="modalUser">
-            <button
-              type="button"
-              class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-              @click="addUser"
-            >
-              Criar Veículo
-            </button>
-          </div>
-          <div v-if="modalUpdate">
-            <button
-              type="button"
-              class="focus:outline-none text-white bg-[#337C24] hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-              @click="atualizar"
-            >
-              Gravar
-            </button>
-            <button
-              type="button"
-              class="focus:outline-none text-white bg-[#FF3E30] hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-              @click="apagar"
-            >
-              Apagar
-            </button>
-          </div>
+
           <div v-if="modalFilter">
             <button
               type="button"
@@ -411,38 +327,30 @@ export default {
   },
   data() {
     return {
-      maxAge: "",
-      minAge: "",
-      filterName: "",
-      body: {},
+
       loading: false,
       generate: true,
       users: [],
       headers: ["Selecione Um Relatório"],
-      allArray: [],
+      array:{},
+      subHeaders: [],
+      subArray:{},
+      openSubTable: false,
       splitBySex: false,
       filterChecked: false,
-      allChecked: true,
-      sex: "A",
-      startDate: "",
-      endDate: "",
       userFilter: false,
       ownerFilter: false,
       carsFilter: false,
-      selectedFilter: "owners",
+      selectedFilter: "cars",
       servicesFilter: false,
       workersFilter: false,
-      brandArray: [],
-      brandArrayFilter: [],
-      modalUpdate: false,
       modalFilter: true,
-      modalUser: false,
-      openModal: true,
-      newUser: {},
-      modalContent: "",
-      user: {},
-      owner: {},
-      filter: {},
+      openModal: false,
+      filterOwner: {},
+      filterWorker: {},
+      filterUser: {},
+      filterVehicles: {},
+      filterService: {},
     };
   },
   methods: {
@@ -453,11 +361,10 @@ export default {
     close() {
       this.filter = {};
       (this.modalContent = ""), (this.openModal = true);
-      this.modalUser = false;
       this.modalFilter = false;
-      this.modalUpdate = false;
       this.modalChart = false;
-
+      this.generate = false;
+      this.loading = false;
     },
     openFilterModal() {
       this.modalFilter = true;
@@ -474,23 +381,6 @@ export default {
       }
     },
 
-    async getResults() {
-      try {
-        this.loading = true;
-        const { data } = await http.get("/owners-all");
-        const owners = data.owners;
-        await this.setUsers(owners);
-        const brand = await http.post("/cars-brand");
-        this.brandArray = brand.data;
-        this.brandArrayFilter = brand.data;
-        this.allArray = this.users;
-        this.filterChar = this.users;
-        this.loading = false;
-      } catch (error) {
-        console.error("Erro ao obter os resultados:", error);
-        this.loading = false;
-      }
-    },
     async setUsers(array) {
       const promises = array.map(async (user) => {
         const body = await this.getBody(user.id);
@@ -513,7 +403,15 @@ export default {
 
       this.users = await Promise.all(promises);
     },
-
+    getFilterName()
+    {
+      if(this.selectedFilter === "owners") return "Proprietários"
+      if(this.selectedFilter === "workers") return "Funcionários"
+      if(this.selectedFilter === "users") return "Usuários"
+      if(this.selectedFilter === "cars") return "Veículos"
+      return "Revisões"
+      
+    },
     async getBody(id) {
       try {
         const { data } = await http.get(`/cars-all/${id}`);
@@ -523,155 +421,116 @@ export default {
         throw error;
       }
     },
-    openUserModal() {
-      (this.user = {}), (this.modalUser = true);
-      this.openModal = false;
-    },
-    async addUser() {
-      this.loading = true;
-      if (
-        this.user.name &&
-        this.user.age &&
-        this.user.email &&
-        this.user.sex &&
-        this.user.adress
-      ) {
-        try {
-          await http.post("/owners-register", this.user);
-          window.location.reload();
-          this.loading = false;
-        } catch (error) {
-          this.loading = false;
-        }
-      }
-    },
     showDetails(details) {
       this.modalContent = details;
       this.owner = { ...details };
       this.newUser = this.owner;
       this.openModal = false;
-      this.modalUpdate = true;
+
     },
-    async atualizar() {
-      if (JSON.stringify(this.modalContent) == JSON.stringify(this.owner))alert("Faça uma Alteração Primeiro!");
-      else
-      {
-        if (this.modalContent.name != this.owner.name) {
-          this.newUser.name = this.owner.name;
-        }
-        if (this.modalContent.email != this.owner.email) {
-          this.newUser.email = this.owner.email;
-        }
-        if (this.modalContent.sex != this.owner.sex) {
-          this.newUser.sex = this.owner.sex;
-        }
-        if (this.modalContent.age != this.owner.age) {
-          this.newUser.age = this.owner.age;
-        }
-        if (this.modalContent.adress != this.owner.adress) {
-          this.newUser.adress = this.owner.adress;
-        }
-        try {
-          this.loading = true;
-          await http.put("/update-owner", this.newUser);
-          window.location.reload();
-          alert("Funcionário Atualizado com sucesso");
-          this.loading = false;
-        } catch (error) {
-          console.log(error);
-          this.loading = false;
-        }
-      }
-    },
-    async apagar() {
-      this.loading = true;
-      try {
-        await http.delete(
-          "/delete-owner/" + this.modalContent.id,
-          this.newUser
-        );
-        alert("Veículo Apagado com sucesso");
-        this.loading = false;
-        window.location.reload();
-      } catch (error) {
-        this.loading = false;
-      }
-    },
-    setFilter()
-    {
-      if (this.selectedFilter == "owners") this.filterOwners();
-      if (this.selectedFilter == "services") this.filterServices();
-      if (this.selectedFilter == "cars") this.filterCars();
-      if (this.selectedFilter == "users") this.filterUsers();
-      if (this.selectedFilter == "workers") this.filterWorkers();
+    setFilter() {
+      if (this.selectedFilter === "owners") this.filterOwners();
+      if (this.selectedFilter === "services") this.filterServices();
+      if (this.selectedFilter ==="cars") this.filterCars();
+      if (this.selectedFilter === "users") this.filterUsers();
+      if (this.selectedFilter === "workers") this.filterWorkers();
     },
 
-   async  setArrayOwners(array)
-    {
-    this.array =  await Promise.all(
-          array.map(async (owner) => {
-              try {
-                const body = await http.get("/cars-all/" + owner.id);
-                return {
-                  name: owner.name,
-                  contServices: owner.number_services,
-                  contCars: body.data.count,
-                  created_at: format(new Date(owner.created_at), "dd/MM/yyyy"),
-                };
-              }
-              catch (error) {
-                console.log(error);
-                return {
-                  name: owner.name,
-                  contServices: owner.number_services,
-                  contCars: 0,
-                  created_at: format(new Date(owner.created_at), "dd/MM/yyyy"),
-                };
-              }
-            })
-          );
+    async setArrayOwners(array) {
+      this.array = await Promise.all(
+        array.map(async (owner) => {
+          try {
+            const body = await http.get("/cars-all/" + owner.id);
+            return {
+              name: owner.name,
+              contServices: owner.number_services,
+              contCars: body.data.count,
+              created_at: format(new Date(owner.created_at), "dd/MM/yyyy"),
+            };
+          } catch (error) {
+            console.log(error);
+            return {
+              name: owner.name,
+              contServices: owner.number_services,
+              contCars: 0,
+              created_at: format(new Date(owner.created_at), "dd/MM/yyyy"),
+            };
+          }
+        })
+      );
     },
-    async setArrayWorkers(array)
+    async setArrayVehicles(array)
     {
-    this.array =  await Promise.all(
-          array.map(async (worker) => {
-              try {
-                const body = await http.get("/worker/" + worker.id);
-                return {
-                  name: worker.name,
-                  salary: "R$ "+worker.salary,
-                  contServices: body.data,
-                  created_at: format(new Date(worker.created_at), "dd/MM/yyyy"),
-                };
-              }
-              catch (error) {
-                console.log(error);
-                return {
-                  name: worker.name,
-                  salary: "R$ "+worker.salary,
-                  contServices: 0,
-                  created_at: format(new Date(worker.created_at), "dd/MM/yyyy"),
-                };
-              }
-            })
-          );
+      this.array = await Promise.all(
+        array.map(async (car) => {
+          try {
+            const body = await http.get("/cars-all/" + car.owner_id);
+            console.log(body)
+            return {
+              owner_name: body.data.data.owner.name,
+              name: car.brand+" "+car.model+" "+car.year,
+              contServices: car.number_services,
+              last_service: format(new Date(car.last_service), "dd/MM/yyyy"),
+            };
+          } catch (error) {
+            console.log(error);
+            
+          }
+        })
+      );
+
+      this.headers=["Nome Proprietário","Carro","Quantidade Revisões","Última Revisão"]
+      this.close()
+    },
+    setArrayUsers(array)
+    {
+      this.array = array.map((user)=>{
+        return {
+          name: user.name,
+          email: user.email,
+          created_at: format(new Date(user.created_at), "dd/MM/yyyy")
+        }
+      });
+    },
+    async setArrayWorkers(array) {
+      this.array = await Promise.all(
+        array.map(async (worker) => {
+          try {
+            const body = await http.get("/worker/" + worker.id);
+            return {
+              name: worker.name,
+              salary: "R$ " + worker.salary,
+              contServices: body.data.count,
+              created_at: format(new Date(worker.created_at), "dd/MM/yyyy"),
+            };
+          } catch (error) {
+            console.log(error);
+            return {
+              name: worker.name,
+              salary: "R$ " + worker.salary,
+              contServices: 0,
+              created_at: format(new Date(worker.created_at), "dd/MM/yyyy"),
+            };
+          }
+        })
+      );
     },
     async filterOwners() {
-      if (Object.keys(this.filter).length === 0)
+
+      if (Object.keys(this.filterOwner).length === 0) 
       {
-        //Retornar Tudo
         this.loading = true;
         try {
           const data = await http.get("/owners-all");
-          await this.setArrayOwners(data.data.owners)
+          await this.setArrayOwners(data.data.owners);
           this.generate = false;
           this.loading = false;
           this.headers = [
-          "Nome",
-          "Quantidade de Revisões",
-          "Quantidade de Carro",
-          "Criado Em",
-        ];
+            "Nome",
+            "Quantidade de Revisões",
+            "Quantidade de Carro",
+            "Criado Em",
+          ];
         } catch (error) {
           console.log(error);
         }
@@ -679,28 +538,26 @@ export default {
 
         this.close();
       }
-      else {
+      else 
+      {
         this.loading = true;
-        try {
-          const data = await http.post("/filter-owners", this.filter);
-
-        if(data.data.owner.length==0)
+        try 
         {
-          alert("Sua Consulta Retornou zero")
-        }
-        else
-        {
+          const data = await http.post("/filter-owners", this.filterOwner);
 
-          await this.setArrayOwners(data.data.owner);
-          this.close()
-          this.headers = [
-          "Nome",
-          "Quantidade de Revisões",
-          "Quantidade de Carro",
-          "Criado Em",
-        ];
-        }
-          this.generate = false
+          if (data.data.owner.length == 0) {
+            alert("Sua Consulta Retornou zero");
+          } else {
+            await this.setArrayOwners(data.data.owner);
+            this.close();
+            this.headers = [
+              "Nome",
+              "Quantidade de Revisões",
+              "Quantidade de Carro",
+              "Criado Em",
+            ];
+          }
+          this.generate = false;
         } catch (error) {
           console.log(error);
         }
@@ -708,59 +565,100 @@ export default {
       }
     },
     async filterWorkers() {
-      console.log("Iniciando Filtro de Workers");
-      if (Object.keys(this.filter).length === 0)
-      {
-          this.loading = true
-          const data = await http.get('/workers-all')
-          console.log(data.data)
-          await this.setArrayWorkers(data.data.workers)
-          this.headers = [
-          "Nome",
-          "Salário",
-          "Quantidade de Serviços",
-          "Criado Em"];
-          this.generate = false;
-          this.loading = false;
-          this.close()
-      }
-      else
-      {
-        this.loading = true;
-        try
-        {
-          console.log(this.filter)
-          const data = await http.post("/filter-workers", this.filter);
-        if(data.data.workers.length==0)
-        {
-          alert("Sua Consulta Retornou zero")
-        }
-        else
-        {
 
-          await this.setArrayWorkers(data.data.workers);
-          this.generate = false;
-          this.loading = false;
-          this.close()
-          this.headers = [
+      console.log("Iniciando Filtro de Workers");
+      if (Object.keys(this.filterWorker).length === 0) {
+        this.loading = true;
+        const data = await http.get("/workers-all");
+        console.log(data.data);
+        await this.setArrayWorkers(data.data.workers);
+        this.headers = [
           "Nome",
           "Salário",
           "Quantidade de Serviços",
-          "Criado Em"];
-        }
-      }
-      catch (error) {
+          "Criado Em",
+        ];
+
+        this.close();
+      } else {
+        this.loading = true;
+        try {
+          console.log(this.filter);
+          const data = await http.post("/filter-workers", this.filterWorker);
+          if (data.data.workers.length == 0) {
+            alert("Sua Consulta Retornou zero");
+          } else {
+            await this.setArrayWorkers(data.data.workers);
+
+            this.close();
+            this.headers = [
+              "Nome",
+              "Salário",
+              "Quantidade de Serviços",
+              "Criado Em",
+            ];
+          }
+        } catch (error) {
           console.log(error);
         }
         this.loading = false;
       }
-
     },
-    filterCars() {
-      console.log("Iniciando Filtro de Cars");
+    async filterCars() {
+      if (Object.keys(this.filterVehicles).length === 0) 
+      {
+        try {
+          const data = await http.get('/cars-all')
+          console.log(data.data.cars)
+          this.setArrayVehicles(data.data.cars)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      else
+      {
+        try {
+          console.log(this.filterVehicles)
+          const data = await http.post('/cars-filter',this.filterVehicles)
+          this.setArrayVehicles(data.data)
+        } catch (error) {
+          console.log(error)
+        }
+      }
     },
-    filterUsers() {
+    async filterUsers() {
       console.log("Iniciando Filtro de Users");
+      if (Object.keys(this.filterUser).length === 0) 
+      {
+        try 
+        {
+          this.loading = true
+          const data = await http.get("users-all");
+          this.setArrayUsers(data.data.users);
+          this.loading = false
+          this.headers=["Nome","Email","Criado Em"]
+          this.close()
+        } 
+        catch (error) 
+        {
+          console.log(error)
+        }
+      }
+      else
+      {
+        try 
+        {
+          this.loading = true
+          const data = await http.post('/filter-users',this.filterUser)
+          this.headers=["Nome","Email","Criado Em"]
+          this.setArrayUsers(data.data.users)
+          this.close()
+        } 
+        catch (error) 
+        {
+          console.log(error)
+        }
+      }
     },
     filterServices() {
       console.log("Iniciando Filtro de Services");
@@ -768,7 +666,7 @@ export default {
     async generateReport() {
       this.loading = true;
       try {
-        console.log(this.array)
+        console.log(this.array);
         const data = await http.post(
           "/generate-report",
           {
@@ -779,10 +677,9 @@ export default {
           },
           {
             responseType: "blob",
-            
           }
         );
-        console.log(data)
+        console.log(data);
         const url = window.URL.createObjectURL(new Blob([data.data]));
         const link = document.createElement("a");
         link.href = url;
@@ -790,7 +687,7 @@ export default {
         document.body.appendChild(link);
         link.click();
         window.URL.revokeObjectURL(url);
-        this.loading = false
+        this.loading = false;
       } catch (error) {
         console.log(error.response.data);
       }

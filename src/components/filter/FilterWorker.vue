@@ -145,7 +145,8 @@ export default {
     maxAge: String,
     minSalary: String,
     maxSalary: String,
-    ordenateOrder: String
+    ordenateOrder: String,
+    order: String
   },
   methods: {
     validateAge(value, ageType) {

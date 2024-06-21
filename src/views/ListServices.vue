@@ -633,7 +633,7 @@ export default {
           nameService: ownerName.name,
           price: "R$" + user.price,
           date: user.date_service,
-          worker_name: workerName.name,
+          worker_name: workerName,
           implementar: {
             carName: carName,
             sexOwner: ownerName.sex,
@@ -705,7 +705,7 @@ export default {
     },
     async getWorkerName(id) {
       const data = await http.get("/worker/" + id);
-      return data.data;
+      return data.data.worker[0].name;
     },
     async getCarName(id)
     {
