@@ -10,8 +10,8 @@
             </tr>
           </thead>
           <tbody class="bg-white">
-            <tr v-for="(row, rowIndex) in body" :key="rowIndex" class="border-b border-gray-400">
-              <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="px-6 py-4 whitespace-nowrap">
+            <tr v-for="(row, rowIndex) in body" :key="rowIndex" class="border-b border-gray-400 text-center">
+              <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="px-6 py-4 whitespace-nowrap text-center">
             {{ cell }}
               </td>
             </tr>

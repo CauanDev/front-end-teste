@@ -577,6 +577,7 @@ export default {
       } else {
         try {
           this.loading = true;
+          console.log(this.service)
           const data = await http.post("/service-register", this.service);
           console.log(data)
           alert("Revisão Cadastrada com sucesso");
