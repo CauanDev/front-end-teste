@@ -70,7 +70,7 @@
       
     </div>
   </div>
-  <div class="flex justify-center w-full gap-2 ">
+  <div class="flex justify-center w-full gap-2 mobile">
     <TableNormal :headers="headers" :body="array" />
     <TableNormal :headers="subHeaders" :body="subArray"  />
   </div>
@@ -239,6 +239,9 @@
                 v-model:brand="filterService.brand"
                 v-model:worker="filterService.worker"
                 v-model:average="filterService.average"
+                v-model:maxSalary="filterService.maxSalary"
+                v-model:minSalary="filterService.minSalary"
+
               />
             </div>
           </div>
@@ -301,7 +304,7 @@ import AgeChardSplit from "../components/chards/AgeChardSplit.vue";
 import CountChardSplit from "../components/chards/CountChardSplit.vue";
 import BrandChard from "../components/chards/BrandChard.vue";
 import FilterOwner from "../components/filter/FilterOwner.vue";
-import FilterWorker from "../components/filter/FIlterWorker.vue";
+import FilterWorker from "../components/filter/FilterWorker.vue";
 import FilterUser from "../components/filter/FilterUser.vue";
 import FilterVehicles from "../components/filter/FilterVehicles.vue";
 import FilterService from "../components/filter/FilterService.vue";
@@ -327,7 +330,8 @@ export default {
   },
   data() {
     return {
-
+      title:"",
+      subDataExist: false,
       loading: false,
       generate: true,
       users: [],
@@ -380,29 +384,6 @@ export default {
         this.filterChecked = true;
       }
     },
-
-    async setUsers(array) {
-      const promises = array.map(async (user) => {
-        const body = await this.getBody(user.id);
-
-        return {
-          name: user.name,
-          email: user.email,
-          created_at: format(new Date(user.created_at), "dd/MM/yyyy"),
-          implementar: {
-            name: user.name,
-            email: user.email,
-            id: user.id,
-            sex: user.sex,
-            age: user.age,
-            adress: user.adress,
-            body: body,
-          },
-        };
-      });
-
-      this.users = await Promise.all(promises);
-    },
     getFilterName()
     {
       if(this.selectedFilter === "owners") return "Proprietários"
@@ -437,6 +418,8 @@ export default {
     },
 
     async setArrayOwners(array) {
+      this.subDataExist=false
+      this.title="Proprietarios"
       this.array = await Promise.all(
         array.map(async (owner) => {
           try {
@@ -462,6 +445,7 @@ export default {
     },
     async setArrayVehicles(array)
     {
+      this.title="Veiculos"
       this.array = await Promise.all(
         array.map(async (car) => {
           try {
@@ -484,6 +468,8 @@ export default {
     },
     setArrayUsers(array)
     {
+      this.title="Usuarios"
+      this.subDataExist=false
       this.array = array.map((user)=>{
         return {
           name: user.name,
@@ -491,8 +477,42 @@ export default {
           created_at: format(new Date(user.created_at), "dd/MM/yyyy")
         }
       });
+    },    
+    async getOwnerName(id)
+    {
+      const data = await http.get("/owners-all");
+      const objetosEncontrados = data.data.owners.filter(objeto => objeto.id === id);
+      return objetosEncontrados[0]   
     },
+    async getWorkerName(id) {
+      const data = await http.get("/worker/" + id);
+      return data.data.worker[0].name;
+    },
+    async setArrayServices(array)
+    {
+      this.headers=["Nome Proprietario","Valor","Feito Em","Mecanico Responsavel"]
+      this.array = await Promise.all(
+        array.map(async (service) => {
+          try {
+            const worker = await this.getWorkerName(service.worker_id);
+            const owner = await this.getOwnerName(service.owner_id);
+            return {
+              name: owner.name,
+              price: "R$ " + service.price,
+              date: format(new Date(service.date_service), "dd/MM/yyyy"),
+              worker:worker,
+            };
+          } catch (error) {
+            console.log(error);
+            
+          }
+        })
+      );
+    }
+    ,
     async setArrayWorkers(array) {
+      this.title="Funcionarios"
+      this.subDataExist=false
       this.array = await Promise.all(
         array.map(async (worker) => {
           try {
@@ -516,7 +536,7 @@ export default {
       );
     },
     async filterOwners() {
-
+      
       if (Object.keys(this.filterOwner).length === 0) 
       {
         this.loading = true;
@@ -544,7 +564,6 @@ export default {
         this.loading = true;
         try 
         {
-           console.log(this.filterOwner)
 
           const data = await http.post("/filter-owners", this.filterOwner);
 
@@ -572,7 +591,6 @@ export default {
     },
     async filterWorkers() {
 
-      console.log("Iniciando Filtro de Workers");
       if (Object.keys(this.filterWorker).length === 0) {
         this.loading = true;
         const data = await http.get("/workers-all");
@@ -609,6 +627,7 @@ export default {
       }
     },
     async filterCars() {
+      this.loading = true
       if (Object.keys(this.filterVehicles).length === 0) 
       {
         try {
@@ -634,12 +653,14 @@ export default {
             {
               if (Object.keys(this.filterVehicles).length === 1)
               {
-                [this.headers, this.array ]= this.setCarsSubOrder(response)               
+                this.title="Veiculos"
+                [this.headers, this.array ]= this.setCarsSubOrder(response)             
                 this.close()
               } 
               else
               {
                 [this.subHeaders,this.subArray]=this.setCarsSubOrder(response)
+                this.subDataExist = true
                 this.setArrayVehicles(data.data.cars)
                 this.close()
               }
@@ -652,6 +673,7 @@ export default {
           console.log(error)
         }
       }
+      this.loading = false
     },
     setCarsSubOrder(response)
     {
@@ -672,8 +694,7 @@ export default {
             "total":item.car_count
           }
         })
-        console.log(body)
-        console.log("foi")
+
       }
       if(this.filterVehicles.subOrder ==="countModelSex")
       {
@@ -698,7 +719,7 @@ export default {
       return [headers,body]
     },
     async filterUsers() {
-      console.log("Iniciando Filtro de Users");
+      this.loading = true 
       if (Object.keys(this.filterUser).length === 0) 
       {
         try 
@@ -730,19 +751,67 @@ export default {
           console.log(error)
         }
       }
+      this.loading = false
     },
-    filterServices() {
-      console.log("Iniciando Filtro de Services");
+    async filterServices() {
+      this.loading = true
+      if (Object.keys(this.filterService).length === 0)
+      {
+        try 
+        {
+          const data = await http.get('/all-services')
+          this.setArrayServices(data.data.services)
+          this.close()
+        } 
+        catch (error) 
+        {
+          console.log(error)
+        }
+      }
+      else
+      {
+        try 
+        {
+          const data = await http.post('/filter-services',this.filterService)
+          if(this.filterService.average)
+          {
+            this.headers = ["Nome Proprietario","Carro","Media de Tempo","Ultimo Servico","Valor Total"]
+            this.array = await Promise.all( data.data.map(async (service)=>{
+              const owner = await this.getOwnerName(service.service.owner_id);
+              console.log(service.service)
+              return{
+                
+                name: owner.name,
+                car: service.car_name.model+" "+service.car_name.brand,
+                average: service.service.averagedays?service.service.averagedays:0,
+                date: service.service.date_service?format(new Date(service.service.date_service), "dd/MM/yyyy"):"Nenhum Agendamento",
+                price:owner.totalPrice?owner.totalPrice:0,
+              }
+            }))
+          }
+          else this.setArrayServices(data.data)
+          this.close()
+        } 
+        catch (error) 
+        {
+          console.log(error)
+        }
+      }
+      this.loading = false;
     },
     async generateReport() {
       this.loading = true;
       try {
+        console.log(this.array)
         const data = await http.post(
           "/generate-report",
           {
             head: this.headers,
             body: this.array,
             title: "de Funcionários",
+            subHead: this.subHeaders,
+            subBody: this.subArray,
+            subDataExist: `${this.subDataExist}`,
             user: this.getName(),
           },
           {

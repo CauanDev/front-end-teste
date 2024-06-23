@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1.5 text-center">
     <div class="flex gap-2 items-center justify-center mobile">
-      <div class="flex flex-col">
+      <div class="flex flex-col mobile w-full">
         <label for="startDate" class="text-sm font-medium text-gray-700"
           >Data Início</label
         >
@@ -12,9 +12,9 @@
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
         />
       </div>
-      <div class="flex flex-col">
+      <div class="flex flex-col mobile w-full">
         <label for="endDate" class="text-sm font-medium text-gray-700"
-          >Data Final:</label
+          >Data Final</label
         >
         <input
           type="date"
@@ -23,14 +23,15 @@
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
         />
       </div>
+
       <div
         v-if="tooltip"
-        class="absolute z-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm tooltip"
+        class="absolute mobile z-10 inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm tooltip"
       >
         Média de Tempo Entre uma Revisão e Outra
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
-      <div class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2 mobile">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512 512"
@@ -51,23 +52,46 @@
         />
       </div>
     </div>
-
-    <div class="flex w-full justify-center items-center">
-      <div class="flex flex-col">
+    <div class="flex w-full gap-2">
+      <div class="flex flex-col mobile">
+        <label for="startDate" class="text-sm font-medium text-gray-700"
+          >Valor Minimo</label
+        >
+        <input
+        type="number"
+        :value="minSalary"
+        @input="$emit('update:minSalary', $event.target.value)"
+        class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"
+        />
+      </div>
+      <div class="flex flex-col mobile">
+        <label for="endDate" class="text-sm font-medium text-gray-700"
+          >Valor Maximo</label
+        >
+        <input
+          type="number"
+          :value="maxSalary"
+          @input="$emit('update:maxSalary', $event.target.value)"
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"
+        />
+      </div>
+    </div>
+    <div class="flex w-full justify-center items-center mobile w-full">
+      <div class="flex flex-col mobile w-full">
         <label for="endDate" class="text-sm font-medium text-gray-700">Nome Proprietário</label>
         <input
           type="text"
           :value="name"
           placeholder="Digite o Nome"
           @input="$emit('update:name', $event.target.value)"
-          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"/>
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"/>
       </div>
 
 
     </div>
-    <div class="flex gap-2 items-center justify-center">
-      <div>
-        <label class="block text-sm font-medium text-gray-900"
+    <div class="flex gap-2 items-center justify-center mobile w-full">
+      <div class="w-full">
+        <label class="block text-sm font-medium text-gray-900 w-full"
           >Marca com:</label
         >
         <select
@@ -80,7 +104,7 @@
           <option value="menor">Menor Número de Revisão</option>
         </select>
       </div>
-      <div>
+      <div class="w-full">
         <label class="block text-sm font-medium text-gray-900"
           >Mecânico Responsável:</label
         >
@@ -116,6 +140,8 @@ export default {
     brand: String,
     worker: String,
     average: String,
+    maxSalary: String,
+    minSalary: String
   },
   data() {
     return {

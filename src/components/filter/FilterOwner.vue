@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-col text-center bg-blue  w-full">
+  <div class="flex flex-col text-center ">
 
-    <div class="flex gap-2 items-center justify-center w-full">
-      <div class="flex flex-col w-full">
+    <div class="flex gap-2 items-center justify-center w-full mobile">
+      <div class="flex flex-col w-full mobile">
         <label for="startDate" class="text-sm font-medium text-gray-700"
           >Data Início</label
         >
@@ -10,10 +10,10 @@
           type="date"
           :value="startDate"
           @input="$emit('update:startDate', $event.target.value)"
-          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"
         />
       </div>
-      <div class="flex flex-col w-full ">
+      <div class="flex flex-col w-full mobile">
         <label for="endDate" class="text-sm font-medium text-gray-700"
           >Data Final</label
         >
@@ -21,7 +21,7 @@
           type="date"
           :value="endDate"
           @input="$emit('update:endDate', $event.target.value)"
-          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"
         />
       </div>
     </div>
@@ -36,7 +36,7 @@
           type="number"
           :value="minAge"
           @input="validateAge($event.target.value, 'minAge')"
-          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm w-[100%]"
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
       </div>
       <div class="flex flex-col w-full">
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="flex gap-2 items-center justify-center mobile w-full mb-2">
+    <div class="flex gap-2 items-center justify-center mobile w-full mb-2 ">
       <div class="flex flex-col w-full">
         <label for="name" class="text-sm font-medium text-gray-700"
           >Nome Proprietário</label
@@ -65,7 +65,7 @@
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
         />
       </div>
-      <div>
+      <div class="mobile"> 
         <label class="block text-sm font-medium text-gray-900"
           >Selecione o Sexo</label
         >
@@ -83,8 +83,8 @@
 
 
 
-    <div class="w-full flex">
-      <div>
+    <div class="w-full flex mobile">
+      <div class="mobile">
         <label class="block text-sm font-medium text-gray-900">Selecione a Marca</label>
         <select
           :value="brand"
@@ -104,7 +104,7 @@
         </select>        
       </div>
 
-      <div class="flex items-center mb-4 gap-2">
+      <div class="flex items-center mb-4 gap-2 mobile">
         <h1 class="ms-2 text-sm font-medium">Ordenar por:</h1>
           <div class="flex flex-col">
             <div class="flex">

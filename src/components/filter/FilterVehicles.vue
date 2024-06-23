@@ -3,15 +3,14 @@
     <div class="flex flex-col  items-center justify-center w-full">
 
 
-      <div class="flex ">
+      <div class="flex mobile">
         Ordenar:
-        <div class="flex w-full">
+        <div class="flex w-full mobile">
           
           <div class="flex flex-col items-center mb-4 w-full">
             <input
               name="ordenate"
               value="nameOwners"
-              :value="order"
               @input="$emit('update:order', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -25,7 +24,6 @@
             <input
               name="ordenate"
               value="vehiclesName"
-              :value="order"
               @input="$emit('update:order', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -39,7 +37,6 @@
             <input
               name="ordenate"
               value="moreServices"
-              :value="order"
               @input="$emit('update:order', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -53,7 +50,6 @@
           <div class="flex flex-col items-center mb-4 w-full">
             <input
               value="desc"
-              :value="ordenateOrder"
               @input="$emit('update:ordenateOrder', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -65,15 +61,14 @@
         </div>
       </div>
 
-      <div class="flex">
+      <div class="flex mobile">
         Incluir:
-        <div class="flex w-full">
+        <div class="flex w-full mobile">
           
           <div class="flex flex-col items-center mb-4 w-full">
             <input
               name="ordenateOrder"
               value="moreVehicleSex"
-              :value="subOrder"
               @input="$emit('update:subOrder', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -87,7 +82,6 @@
             <input
               name="ordenateOrder"
               value="countModel"
-              :value="subOrder"
               @input="$emit('update:subOrder', $event.target.value)"
               type="radio"
               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -101,7 +95,6 @@
           <input
             name="ordenateOrder"
             value="countModelSex"
-            :value="subOrder"
             @input="$emit('update:subOrder', $event.target.value)"
             type="radio"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
