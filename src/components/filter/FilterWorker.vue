@@ -6,6 +6,7 @@
         <input
           type="date"
           :value="startDate"
+          v-model="this.startDate"
           @input="$emit('update:startDate', $event.target.value)"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
@@ -15,6 +16,7 @@
         <input
           type="date"
           :value="endDate"
+          v-model="this.endDate"
           @input="$emit('update:endDate', $event.target.value)"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
@@ -26,6 +28,7 @@
         <input
           type="number"
           :value="minAge"
+          v-model="this.minAge"
           @input="validateAge($event.target.value, 'minAge')"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
         />
@@ -35,6 +38,7 @@
         <input
           type="number"
           :value="maxAge"
+          v-model="this.maxAge"
           @input="validateAge($event.target.value, 'maxAge')"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
         />
@@ -47,6 +51,7 @@
           type="number"
           max="1234"
           :value="minSalary"
+          v-model="this.minSalary"
           @input="validateSalary($event.target.value,'minSalary')"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
         />
@@ -56,6 +61,7 @@
         <input
           type="number"
           :value="maxSalary"
+          v-model="this.maxSalary"
           @input="validateSalary($event.target.value,'maxSalary')"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
         />
@@ -67,6 +73,7 @@
         <input
           type="text"
           :value="name"
+          v-model="this.name"
           @input="$emit('update:name', $event.target.value)"
           placeholder="Digite o Nome"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -76,6 +83,7 @@
         <label class="text-sm font-medium text-gray-900">Selecione o Sexo</label>
         <select
           :value="sex"
+          v-model="this.sex"
           @change="$emit('update:sex', $event.target.value)"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
         >
@@ -92,6 +100,7 @@
           <input
             name="ordenate"
             value="nameWorkers"
+            v-model="this.order"
             @input="$emit('update:order', $event.target.value)"
             type="radio"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -102,6 +111,7 @@
           <input
             name="ordenate"
             value="salaryWorkers"
+            v-model="this.order"
             @input="$emit('update:order', $event.target.value)"
             type="radio"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -112,6 +122,7 @@
           <input
             name="ordenate"
             value="moreServices"
+            v-model="this.order"
             @input="$emit('update:order', $event.target.value)"
             type="radio"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
@@ -122,6 +133,7 @@
           <input
             name="ordenateOrder"
             value="desc"
+            v-model="this.ordenateOrder"
             @input="$emit('update:ordenateOrder', $event.target.value)"
             type="radio"
             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"

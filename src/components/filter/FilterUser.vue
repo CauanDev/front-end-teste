@@ -9,8 +9,9 @@
         <input
           type="text"
           placeholder="Digite o Nome"
+          v-model="this.name"
           @input="$emit('update:name', $event.target.value)"
-          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"/>
+          class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm w-full"/>
         </div>
 
         <div class="flex flex-col w-full">
@@ -20,6 +21,7 @@
               <input
                 name="ordenate"
                 value="orderName"
+                v-model="this.order"
                 @input="$emit('update:order', $event.target.value)"
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
@@ -30,6 +32,7 @@
               <input
                 name="ordenate"
                 value="orderDate"
+                v-model="this.order"
                 @input="$emit('update:order', $event.target.value)"
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
@@ -39,6 +42,7 @@
             <div class="flex flex-col items-center">
               <input
                 value="desc"
+                v-model="this.ordenateOrder"
                 @input="$emit('update:ordenateOrder', $event.target.value)"
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
@@ -58,6 +62,7 @@
           <input
             type="date"
             value="startDate"
+            v-model="this.startDate"
             @input="$emit('update:startDate', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
           />
@@ -70,6 +75,7 @@
           <input
             type="date"
             value="endDate"
+            v-model="this.endDate"
             @input="$emit('update:endDate', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
           />

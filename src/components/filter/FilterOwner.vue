@@ -60,7 +60,7 @@
         <input
           type="text"
           placeholder="Digite o Nome"
-          :value="name"
+          :value="this.name"
           @input="$emit('update:name', $event.target.value)"
           class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 block sm:text-sm"
         />
@@ -119,7 +119,7 @@
             <div class="flex">
               <input
                 name="ordenate"
-                value="moreVehicles"
+                :value="moreVehicles"
                 @input="$emit('update:order', $event.target.value)"
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
@@ -133,7 +133,16 @@
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
               <label class="ms-2 text-sm font-medium">Mais Revisões</label>
-            </div>      
+            </div>  
+            <div class="flex">
+              <input
+                name="ordenate"
+                value="ageOrder"
+                @input="$emit('update:order', $event.target.value)"
+                type="radio"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
+              <label class="ms-2 text-sm font-medium">Idade dos Proprietários</label>
+            </div>                   
             <div class="flex">
               <input
                 name="ordenateOrder"
@@ -142,7 +151,8 @@
                 type="radio"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"/>
               <label class="ms-2 text-sm font-medium">Ordem Decrescente</label>
-            </div>        
+            </div>      
+              
           </div>
 
 
@@ -165,6 +175,7 @@ export default {
     minAge: String,
     maxAge: String,
     brand: String,
+    order: String,
     ordenateOrder:String
   },
   methods: {

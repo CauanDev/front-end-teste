@@ -70,9 +70,9 @@
       
     </div>
   </div>
-  <div class="flex justify-center flex-col w-full overflow-y-auto items-center">
-    <TableNormal :headers="headers" :body="array" class="w-[50%]" />
-    <TableNormal :headers="subHeaders" :body="subArray" />
+  <div class="flex justify-center w-full gap-2 ">
+    <TableNormal :headers="headers" :body="array" />
+    <TableNormal :headers="subHeaders" :body="subArray"  />
   </div>
 
   <div
@@ -205,7 +205,7 @@
             </div>
             <div
               v-if="selectedFilter === 'users'"
-              class="w-full flex justify-center"
+              class="w-full flex justify-center "
             >
               <FilterUser
                 v-model:startDate="filterUser.startDate"
@@ -341,7 +341,7 @@ export default {
       userFilter: false,
       ownerFilter: false,
       carsFilter: false,
-      selectedFilter: "cars",
+      selectedFilter: "users",
       servicesFilter: false,
       workersFilter: false,
       modalFilter: true,
@@ -443,7 +443,8 @@ export default {
             const body = await http.get("/cars-all/" + owner.id);
             return {
               name: owner.name,
-              contServices: owner.number_services,
+              age: owner.age,
+              contServices: owner.number_services? owner.number_services:"Nenhum Agendamento" ,
               contCars: body.data.count,
               created_at: format(new Date(owner.created_at), "dd/MM/yyyy"),
             };
@@ -465,12 +466,11 @@ export default {
         array.map(async (car) => {
           try {
             const body = await http.get("/cars-all/" + car.owner_id);
-            console.log(body)
             return {
               owner_name: body.data.data.owner.name,
               name: car.brand+" "+car.model+" "+car.year,
               contServices: car.number_services,
-              last_service: format(new Date(car.last_service), "dd/MM/yyyy"),
+              last_service: car.last_service?format(new Date(car.last_service), "dd/MM/yyyy"):"Nenhum Agendamento",
             };
           } catch (error) {
             console.log(error);
@@ -527,6 +527,7 @@ export default {
           this.loading = false;
           this.headers = [
             "Nome",
+            "Idade",
             "Quantidade de Revisões",
             "Quantidade de Carro",
             "Criado Em",
@@ -543,15 +544,20 @@ export default {
         this.loading = true;
         try 
         {
+           console.log(this.filterOwner)
+
           const data = await http.post("/filter-owners", this.filterOwner);
 
           if (data.data.owner.length == 0) {
             alert("Sua Consulta Retornou zero");
-          } else {
+          } 
+          else {
             await this.setArrayOwners(data.data.owner);
+            
             this.close();
             this.headers = [
               "Nome",
+              "Idade",
               "Quantidade de Revisões",
               "Quantidade de Carro",
               "Criado Em",
@@ -570,7 +576,6 @@ export default {
       if (Object.keys(this.filterWorker).length === 0) {
         this.loading = true;
         const data = await http.get("/workers-all");
-        console.log(data.data);
         await this.setArrayWorkers(data.data.workers);
         this.headers = [
           "Nome",
@@ -583,7 +588,6 @@ export default {
       } else {
         this.loading = true;
         try {
-          console.log(this.filter);
           const data = await http.post("/filter-workers", this.filterWorker);
           if (data.data.workers.length == 0) {
             alert("Sua Consulta Retornou zero");
@@ -609,7 +613,6 @@ export default {
       {
         try {
           const data = await http.get('/cars-all')
-          console.log(data.data.cars)
           this.setArrayVehicles(data.data.cars)
         } catch (error) {
           console.log(error)
@@ -618,13 +621,81 @@ export default {
       else
       {
         try {
-          console.log(this.filterVehicles)
           const data = await http.post('/cars-filter',this.filterVehicles)
-          this.setArrayVehicles(data.data)
+          if(data.data.length==0)
+          {
+            alert("Sua Consulta Retornou Zero")
+            this.filterVehicles = {}
+          }
+          else
+          {
+            const response =(data.data.order)
+            if(this.filterVehicles.subOrder)
+            {
+              if (Object.keys(this.filterVehicles).length === 1)
+              {
+                [this.headers, this.array ]= this.setCarsSubOrder(response)               
+                this.close()
+              } 
+              else
+              {
+                [this.subHeaders,this.subArray]=this.setCarsSubOrder(response)
+                this.setArrayVehicles(data.data.cars)
+                this.close()
+              }
+            }            
+            else this.setArrayVehicles(data.data)
+            
+          }
+
         } catch (error) {
           console.log(error)
         }
       }
+    },
+    setCarsSubOrder(response)
+    {
+      let headers=[]
+      let body = []
+      
+      if(this.filterVehicles.subOrder ==="moreVehicleSex")
+      { 
+        headers=["Masculino","Feminino"]
+        body=[{"man":response.man,"woman":response.woman}]
+      }
+      if(this.filterVehicles.subOrder ==="countModel")
+      {
+        headers=["Nome da Marca","Quantidade de Carros"]
+        body = response.map((item)=>{          
+          return {
+            "brand": item.brand,
+            "total":item.car_count
+          }
+        })
+        console.log(body)
+        console.log("foi")
+      }
+      if(this.filterVehicles.subOrder ==="countModelSex")
+      {
+        headers=["Sexo","Marca","Quantidade"]
+        response.man.forEach(item => {
+          body.push({
+            gender: 'Masculino',
+            brand: item.brand,
+            total_cars: item.total_cars
+          });
+        });
+
+        response.women.forEach(item => {
+          body.push({
+            gender: 'Feminino',
+            brand: item.brand,
+            total_cars: item.total_cars
+          });
+        });
+        if(response.moreCarsSex ==="Feminino") body = body.reverse()
+      }
+      return [headers,body]
     },
     async filterUsers() {
       console.log("Iniciando Filtro de Users");
@@ -666,7 +737,6 @@ export default {
     async generateReport() {
       this.loading = true;
       try {
-        console.log(this.array);
         const data = await http.post(
           "/generate-report",
           {
@@ -679,7 +749,6 @@ export default {
             responseType: "blob",
           }
         );
-        console.log(data);
         const url = window.URL.createObjectURL(new Blob([data.data]));
         const link = document.createElement("a");
         link.href = url;

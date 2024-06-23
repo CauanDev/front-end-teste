@@ -6,6 +6,7 @@
           <input
             type="date"
             :value="startDate"
+            v-model="this.startDate"
             @input="$emit('update:startDate', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500   sm:text-sm"
           />
@@ -15,6 +16,7 @@
           <input
             type="date"
             :value="endDate"
+            v-model="this.endDate"
             @input="$emit('update:endDate', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500   sm:text-sm"
           />
@@ -27,6 +29,7 @@
           <input
             type="number"
             :value="minAge"
+            v-model="this.minAge"
             @input="$emit('update:minAge', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500  w-[100%] sm:text-sm"
           />
@@ -37,6 +40,7 @@
           <input
             type="number"
             :value="maxAge"
+            v-model="this.maxAge"
             @input="$emit('update:maxAge', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%]  sm:text-sm"
           />
@@ -49,6 +53,7 @@
           <input
             type="text"
             :value="minSalary"
+            v-model="this.minSalary"
             @input="$emit('update:minSalary', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
           />
@@ -58,6 +63,7 @@
           <input
             type="text"
             :value="maxSalary"
+            v-model="this.maxSalary"
             @input="$emit('update:maxSalary', $event.target.value)"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 w-[100%] sm:text-sm"
           />
@@ -70,6 +76,7 @@
           <input
             type="text"
             :value="filterName"
+            v-model="this.filterName"
             @input="$emit('update:filterName', $event.target.value)"
             placeholder="Digite o Nome"
             class="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500   sm:text-sm"
@@ -79,6 +86,7 @@
           <label class="  text-sm font-medium text-gray-900">Selecione o Sexo</label>
           <select
             :value="sex"
+            v-model="this.sex"
             @change="$emit('update:sex', $event.target.value)"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5"
             >
